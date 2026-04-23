@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-primary: #0EA5E9;
+    --color-primary-dark: #0284C7;
+    --color-primary-light: #BAE6FD;
+    --color-secondary: #06B6D4;
+    --color-accent: #10B981;
+    --color-warm: #F59E0B;
+    --color-surface: #FFFFFF;
+    --color-surface-2: #F8FAFC;
+    --color-surface-3: #F1F5F9;
+    --color-border: rgba(14, 165, 233, 0.12);
+    --color-text: #0F172A;
+    --color-text-2: #475569;
+    --color-text-3: #94A3B8;
+    --glass-bg: rgba(255, 255, 255, 0.72);
+    --glass-border: rgba(14, 165, 233, 0.18);
+    --glass-shadow: 0 8px 32px rgba(14, 165, 233, 0.08);
+    --glass-blur: blur(20px);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 16px rgba(14, 165, 233, 0.1), 0 2px 4px rgba(0,0,0,0.04);
+    --shadow-lg: 0 12px 40px rgba(14, 165, 233, 0.14), 0 4px 8px rgba(0,0,0,0.06);
+    --section-py: 5rem;
+    --radius-sm: 0.5rem;
+    --radius-md: 1rem;
+    --radius-lg: 1.5rem;
+    --radius-xl: 2rem;
+    --font-display: "Plus Jakarta Sans", sans-serif;
+    --font-body: "DM Sans", sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; overflow-x: hidden; width: 100%; }
+  body { font-family: var(--font-body); color: var(--color-text); background: var(--color-surface); overflow-x: hidden; width: 100%; position: relative; }
+  ::selection { background: var(--color-primary-light); color: var(--color-primary-dark); }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--color-surface-2); }
+  ::-webkit-scrollbar-thumb { background: var(--color-primary-light); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
+}
+
+@layer components {
+  .glass-card { background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); border-radius: var(--radius-lg); }
+  .section-container { max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 1.25rem; padding-right: 1.25rem; }
+  .section-py { padding-top: var(--section-py); padding-bottom: var(--section-py); }
+  .gradient-text { background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .bg-gradient-subtle { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%); }
+  .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.75rem; background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%); color: white; border-radius: 9999px; font-weight: 600; font-size: 0.9375rem; letter-spacing: 0.01em; box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35); transition: all 0.25s ease; cursor: pointer; border: none; text-decoration: none; white-space: nowrap; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(14, 165, 233, 0.45); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-whatsapp { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.75rem; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: white; border-radius: 9999px; font-weight: 600; font-size: 0.9375rem; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35); transition: all 0.25s ease; cursor: pointer; border: none; text-decoration: none; white-space: nowrap; }
+  .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45); }
+  .btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.6875rem 1.5rem; background: transparent; color: var(--color-primary); border: 1.5px solid var(--color-primary); border-radius: 9999px; font-weight: 600; font-size: 0.9375rem; transition: all 0.25s ease; cursor: pointer; text-decoration: none; white-space: nowrap; }
+  .btn-outline:hover { background: var(--color-primary); color: white; transform: translateY(-1px); }
+  .form-input { width: 100%; padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.9); border: 1.5px solid rgba(14, 165, 233, 0.2); border-radius: var(--radius-md); color: var(--color-text); font-size: 0.9375rem; transition: all 0.2s; outline: none; }
+  .form-input:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.12); background: white; }
+  .form-label { display: block; font-size: 0.875rem; font-weight: 500; color: var(--color-text-2); margin-bottom: 0.375rem; }
+  .mesh-bg { background-color: #f0f9ff; background-image: radial-gradient(at 20% 30%, rgba(14, 165, 233, 0.08) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(6, 182, 212, 0.08) 0px, transparent 50%), radial-gradient(at 70% 90%, rgba(16, 185, 129, 0.06) 0px, transparent 50%); }
+  .section-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-primary); margin-bottom: 0.875rem; }
+  .section-eyebrow::before { content: ''; display: block; width: 20px; height: 2px; background: var(--color-primary); border-radius: 1px; }
+}
+
+@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+@keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.3); } 50% { box-shadow: 0 0 0 8px rgba(14, 165, 233, 0); } }
+@keyframes whatsapp-pulse { 0% { transform: scale(1); box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4); } 50% { transform: scale(1.05); box-shadow: 0 8px 24px rgba(37, 211, 102, 0.6); } 100% { transform: scale(1); box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4); } }
+
+.animate-float { animation: float 4s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-whatsapp { animation: whatsapp-pulse 2.5s ease-in-out infinite; }
+
+@media (max-width: 768px) { :root { --section-py: 3.5rem; } }
+
+/* Font variable aliases for components using var(--font-display) */
+:root {
+  --font-display: "Plus Jakarta Sans", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+}
+
+.font-display { font-family: var(--font-display); }
+.font-body { font-family: var(--font-body); }
+
+
