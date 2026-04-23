@@ -24,7 +24,7 @@ export const doctors: Doctor[] = [
     bio: "Dr. Sahu is a leading endocrinologist with over 12 years of experience managing complex metabolic and hormonal disorders.",
     available: "Mon, Wed, Fri",
     languages: ["Odia", "Hindi", "English"],
-    image: "/images/doctors/dr-rajesh-Sahu.webp",
+    image: "/images/doctors/dr-sandeep-kumar-sahu.webp",
   },
   {
     id: "dr-priya-nanda",
@@ -50,7 +50,7 @@ export const doctors: Doctor[] = [
     bio: "A highly experienced neurologist, Dr. Das specializes in epilepsy, stroke rehabilitation, and movement disorders.",
     available: "Mon, Thu",
     languages: ["Odia", "Hindi", "English"],
-    image: "/images/doctors/dr-suresh-Das.webp",
+    image: "/images/doctors/dr-manasi-Das.webp",
   },
   {
     id: "dr-anita-das",
@@ -63,7 +63,7 @@ export const doctors: Doctor[] = [
     bio: "Dr. Das offers a gentle approach to dental care, specializing in restorative and cosmetic dentistry for all age groups.",
     available: "Mon–Sat",
     languages: ["Odia", "Hindi"],
-    image: "/images/doctors/dr-anita-das.webp",
+    image: "/images/doctors/dr-abhash-dash.webp",
   },
   {
     id: "dr-Asutosh-Rout",
@@ -76,7 +76,7 @@ export const doctors: Doctor[] = [
     bio: "Dr. Rout is an expert in managing chronic respiratory diseases including asthma, COPD, and interstitial lung conditions.",
     available: "Tue, Wed, Fri",
     languages: ["Odia", "Hindi", "English"],
-    image: "/images/doctors/dr-Asutosh-Rout.webp",
+    image: "/images/doctors/dr-asutosh-rout.webp",
   },
   {
     id: "dr-meera-singh",
@@ -102,7 +102,7 @@ export const doctors: Doctor[] = [
     bio: "Dr. Parida is a leading gastroenterologist with expertise in diagnosing and treating complex digestive tract and liver disorders.",
     available: "Mon, Wed, Fri",
     languages: ["Odia", "Hindi", "English"],
-    image: "/images/doctors/dr-suryakanta-parida.webp",
+    image: "/images/doctors/dr-Suryakanta-parida.webp",
   },
   {
     id: "dr-ramesh-nayak",
