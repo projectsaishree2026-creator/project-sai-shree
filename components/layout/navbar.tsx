@@ -15,6 +15,10 @@ export function Navbar() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const pathname = usePathname();
 
+  /** True when `href` matches the current route (exact for "/", prefix for all others). */
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handler);
@@ -63,7 +67,7 @@ export function Navbar() {
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-1">
-            {navigation.main.map((item) =>
+          {navigation.main.map((item) =>
               item.label === "Services" ? (
                 <div
                   key="services"
@@ -74,13 +78,21 @@ export function Navbar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                      pathname.startsWith("/services")
-                        ? "text-primary bg-primary/8"
+                      "flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                      isActive("/services")
+                        ? "text-primary font-semibold"
                         : "text-gray-700 hover:text-primary hover:bg-primary/5"
                     )}
                   >
-                    Services
+                    <span
+                      className={cn(
+                        "relative pb-0.5",
+                        isActive("/services") &&
+                          "after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:rounded-full after:bg-primary"
+                      )}
+                    >
+                      Services
+                    </span>
                     <ChevronDown
                       size={14}
                       className={cn("transition-transform", servicesOpen && "rotate-180")}
@@ -92,7 +104,12 @@ export function Navbar() {
                         <Link
                           key={s.href}
                           href={s.href}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:text-primary hover:bg-primary/5 transition-colors"
+                          className={cn(
+                            "block px-4 py-2 text-sm transition-colors",
+                            pathname === s.href
+                              ? "text-primary font-semibold bg-primary/8"
+                              : "text-gray-700 hover:text-primary hover:bg-primary/5"
+                          )}
                         >
                           {s.label}
                         </Link>
@@ -105,13 +122,21 @@ export function Navbar() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                    pathname === item.href
-                      ? "text-primary bg-primary/8"
-                      : "text-gray-700 hover:text-primary hover:bg-primary/5"
+                    "px-3 py-2 rounded-lg text-sm transition-all duration-200",
+                    isActive(item.href)
+                      ? "text-primary font-semibold"
+                      : "text-gray-700 font-medium hover:text-primary hover:bg-primary/5"
                   )}
                 >
-                  {item.label}
+                  <span
+                    className={cn(
+                      "relative pb-0.5",
+                      isActive(item.href) &&
+                        "after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:rounded-full after:bg-primary"
+                    )}
+                  >
+                    {item.label}
+                  </span>
                 </Link>
               )
             )}
@@ -160,9 +185,9 @@ export function Navbar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "px-4 py-3 rounded-xl text-sm font-medium transition-colors",
-                  pathname === item.href
-                    ? "text-primary bg-primary/8"
+                  "px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200",
+                  isActive(item.href)
+                    ? "text-primary bg-primary/8 font-semibold"
                     : "text-gray-700 hover:text-primary hover:bg-gray-50"
                 )}
               >
