@@ -93,7 +93,7 @@ export function ContactSection() {
             <div className="rounded-3xl overflow-hidden shadow-lg border border-gray-100 h-[420px]">
               <iframe
                 title="Sai Shree Polyclinic Location"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3740.97!2d85.8823!3d20.4686!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a19009b2c59e1a1%3A0x4a0b9e1d2e3f5a6b!2sKathagola%2C+Cuttack%2C+Odisha+753110!5e0!3m2!1sen!2sin!4v1234567890"
+                src={clinic.mapEmbedUrl}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

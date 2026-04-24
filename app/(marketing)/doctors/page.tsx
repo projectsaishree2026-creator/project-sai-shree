@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 const SPECIALTY_COLORS: Record<string, string> = {
   Endocrinology: "#0EA5E9",
   Gynecology: "#EC4899",
+  "Gynecology & IVF": "#EC4899",
   Neurology: "#6366F1",
   Dental: "#10B981",
   Pulmonology: "#06B6D4",
@@ -77,7 +78,7 @@ export default function DoctorsPage() {
               <div className="flex flex-wrap gap-5 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
                   <MapPin size={15} className="text-primary shrink-0" />
-                  <span>Mangalabag, Kathagola, Cuttack, Odisha 753001</span>
+                  <span>Sai shree polyclinic Cuttack At- Kathagola, Ring Rd, near Shree Maa, Cuttack, Odisha 753110</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone size={15} className="text-primary shrink-0" />

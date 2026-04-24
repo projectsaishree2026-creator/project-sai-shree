@@ -97,11 +97,11 @@ export default function ContactPage() {
           <h2 className="font-display font-bold text-2xl text-gray-900 mb-2 flex items-center gap-2" style={{ fontFamily: "var(--font-display)" }}>
             <Navigation size={22} className="text-primary" /> Find Us on the Map
           </h2>
-          <p className="text-sm text-gray-500 mb-5">First Smile Dental Clinic, Mangalabag, Kathagola, Cuttack, Odisha 753001, India</p>
+          <p className="text-sm text-gray-500 mb-5">Sai shree polyclinic Cuttack At- Kathagola, Ring Rd, near Shree Maa, Cuttack, Odisha 753110</p>
           <div className="rounded-3xl overflow-hidden shadow-lg border border-gray-100 h-[400px]">
             <iframe
-              title="First Smile Dental Clinic Map"
-              src="https://maps.google.com/maps?q=first%20smile%20dental%20clinic%20Mangalabag,%20kathagola,%20Cuttack,%20Odisha%20753001,%20India&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              title="Sai Shree Polyclinic Map"
+              src={clinic.mapEmbedUrl}
               width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
             />
           </div>

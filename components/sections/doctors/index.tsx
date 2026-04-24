@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { CalendarCheck, Clock, Languages, ArrowRight } from "lucide-react";
+import { VisitWebsiteButton } from "@/components/ui/visit-website-button";
 import { doctors } from "@/data/doctors";
 import { SectionHeader } from "@/components/shared/section-header";
 import { Stagger, StaggerItem } from "@/components/animations";
@@ -14,6 +15,7 @@ import { clinic } from "@/data/clinic";
 const SPECIALTY_COLORS: Record<string, string> = {
   Endocrinology: "#0EA5E9",
   Gynecology: "#EC4899",
+  "Gynecology & IVF": "#EC4899",
   Neurology: "#6366F1",
   Dental: "#10B981",
   Pulmonology: "#06B6D4",
@@ -25,6 +27,7 @@ const SPECIALTY_COLORS: Record<string, string> = {
 const INITIALS_BG: Record<string, string> = {
   Endocrinology: "#EFF6FF",
   Gynecology: "#FDF2F8",
+  "Gynecology & IVF": "#FDF2F8",
   Neurology: "#EEF2FF",
   Dental: "#ECFDF5",
   Pulmonology: "#ECFEFF",
@@ -159,17 +162,25 @@ export function DoctorCard({ doctor }: { doctor: (typeof doctors)[0] }) {
             </div>
           </div>
 
-          <a
-            href={waUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()} // Prevent flip when clicking button
-            className="btn-primary mt-auto w-full justify-center py-2.5 text-sm"
-            aria-label={`Book Appointment with ${doctor.name}`}
-          >
-            <CalendarCheck size={16} />
-            Book Appointment
-          </a>
+          {/* Action buttons — Book Appointment + optional Visit Website */}
+          <div className="mt-auto flex flex-wrap gap-2">
+            <a
+              href={waUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()} // Prevent flip when clicking button
+              className="btn-primary flex-1 min-w-0 justify-center py-2.5 text-sm"
+              aria-label={`Book Appointment with ${doctor.name}`}
+            >
+              <CalendarCheck size={16} />
+              Book Appointment
+            </a>
+
+            <VisitWebsiteButton
+              url={doctor.website}
+              doctorName={doctor.name}
+            />
+          </div>
         </div>
       </div>
     </div>

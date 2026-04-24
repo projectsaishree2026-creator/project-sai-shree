@@ -17,12 +17,12 @@ const ICONS: Record<string, React.ElementType> = {
 };
 
 const SERVICE_DOCTOR_MAP: Record<string, string> = {
-  endocrinology: "dr-rajesh-Sahu",
-  gynecology: "dr-priya-nanda",
+  endocrinology: "dr-sandeep-kumar-sahu",
+  gynecology: "dr-pratha-apramita",
   neurology: "dr-suresh-Das",
   dental: "dr-anita-das",
   pulmonology: "dr-Asutosh-Rout",
-  oncology: "dr-meera-singh",
+  oncology: "dr-nitya-nutan-misra",
   gastroenterology: "dr-suryakanta-parida",
   urology: "dr-ramesh-nayak",
 };
@@ -117,7 +117,7 @@ export default function ServicesPage() {
               </h2>
               <p className="text-gray-600 text-base leading-relaxed mb-6">
                 <strong>Sai Shree Polyclinic</strong> is a premier multi-specialty healthcare centre located at{" "}
-                <strong>Mangalabag, Kathagola, Cuttack, Odisha 753001</strong>. With 8 specialist departments under one
+                <strong>Sai shree polyclinic Cuttack At- Kathagola, Ring Rd, near Shree Maa, Cuttack, Odisha 753110</strong>. With 8 specialist departments under one
                 roof, we deliver world-class medical expertise to the residents of Cuttack and surrounding districts of
                 Odisha. Our team of qualified <strong>MD, MS, DM, and MCh specialists</strong> provides evidence-based,
                 compassionate care — from routine health check-ups to the management of complex chronic conditions. We
@@ -127,7 +127,7 @@ export default function ServicesPage() {
               <div className="flex flex-wrap gap-5 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
                   <MapPin size={15} className="text-primary shrink-0" />
-                  <span>Mangalabag, Kathagola, Cuttack, Odisha 753001</span>
+                  <span>Sai shree polyclinic Cuttack At- Kathagola, Ring Rd, near Shree Maa, Cuttack, Odisha 753110</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone size={15} className="text-primary shrink-0" />

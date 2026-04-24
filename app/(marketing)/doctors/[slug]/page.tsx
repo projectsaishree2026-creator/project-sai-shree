@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const SPECIALTY_COLORS: Record<string, string> = {
   Endocrinology: "#0EA5E9",
   Gynecology: "#EC4899",
+  "Gynecology & IVF": "#EC4899",
   Neurology: "#6366F1",
   Dental: "#10B981",
   Pulmonology: "#06B6D4",

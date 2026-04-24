@@ -10,12 +10,14 @@ export interface Doctor {
   available: string;
   languages: string[];
   image: string;
+  /** Optional personal/profile website. If absent the "Visit Website" button is hidden. */
+  website?: string;
 }
 
 export const doctors: Doctor[] = [
   {
-    id: "dr-rajesh-Sahu",
-    slug: "dr-rajesh-Sahu",
+    id: "dr-sandeep-kumar-sahu",
+    slug: "dr-sandeep-kumar-sahu",
     name: "Dr. Sandeep Kumar Sahu",
     qualification: "MBBS, MD (Medicine), DM (Endocrinology)",
     specialty: "Endocrinology",
@@ -24,12 +26,13 @@ export const doctors: Doctor[] = [
     bio: "Dr. Sahu is a leading endocrinologist with over 12 years of experience managing complex metabolic and hormonal disorders.",
     available: "Mon, Wed, Fri",
     languages: ["Odia", "Hindi", "English"],
-    image: "/images/doctors/dr-sandeep-kumar-sahu.webp",
+    image: "/images/doctors/dr-sandeep-kumar-sahu-1.webp",
+    website: "https://www.drsandeepkumarsahu.com/",
   },
   {
-    id: "dr-priya-nanda",
-    slug: "dr-priya-nanda",
-    name: "Dr. Priya Nanda",
+    id: "dr-pratha-apramita",
+    slug: "dr-pratha-apramita",
+    name: "Dr. Pratha Apramita",
     qualification: "MBBS, MS (Gynecology & Obstetrics)",
     specialty: "Gynecology",
     specialtySlug: "gynecology",
@@ -37,24 +40,26 @@ export const doctors: Doctor[] = [
     bio: "Dr. Nanda is a compassionate gynecologist dedicated to women's health at every stage of life, from adolescence to menopause.",
     available: "Tue, Thu, Sat",
     languages: ["Odia", "Hindi"],
-    image: "/images/doctors/dr-priya-nanda.webp",
+    image: "/images/doctors/dr-pratha-apramita.webp",
+    website: "#", // TODO: replace with real URL
   },
   {
-    id: "dr-suresh-Das",
-    slug: "dr-suresh-Das",
+    id: "dr-manasi-Das",
+    slug: "dr-manasi-Das",
     name: "Dr. Manasi Das",
     qualification: "MBBS, MD (Neurology), DM",
     specialty: "Neurology",
     specialtySlug: "neurology",
     experience: "15 Years",
     bio: "A highly experienced neurologist, Dr. Das specializes in epilepsy, stroke rehabilitation, and movement disorders.",
-    available: "Mon, Thu",
+    available: "Everyday",
     languages: ["Odia", "Hindi", "English"],
     image: "/images/doctors/dr-manasi-Das.webp",
+    website: "#", // TODO: replace with real URL
   },
   {
-    id: "dr-anita-das",
-    slug: "dr-anita-das",
+    id: "dr-abhash-dashs",
+    slug: "dr-abhash-dash",
     name: "Dr. Abhas Dash",
     qualification: "BDS, MDS (Conservative Dentistry)",
     specialty: "Dental",
@@ -64,6 +69,7 @@ export const doctors: Doctor[] = [
     available: "Mon–Sat",
     languages: ["Odia", "Hindi"],
     image: "/images/doctors/dr-abhash-dash.webp",
+    website: "https://www.firstsmiledentalsclinic.com/", // TODO: replace with real URL
   },
   {
     id: "dr-Asutosh-Rout",
@@ -74,22 +80,24 @@ export const doctors: Doctor[] = [
     specialtySlug: "pulmonology",
     experience: "10 Years",
     bio: "Dr. Rout is an expert in managing chronic respiratory diseases including asthma, COPD, and interstitial lung conditions.",
-    available: "Tue, Wed, Fri",
+    available: "Everyday",
     languages: ["Odia", "Hindi", "English"],
-    image: "/images/doctors/dr-asutosh-rout.webp",
+    image: "/images/doctors/dr-asutosh-rout-1.webp",
+    website: "https://www.drasutoshrout.com/", // TODO: replace with real URL
   },
   {
-    id: "dr-meera-singh",
-    slug: "dr-meera-singh",
-    name: "Dr. Meera Singh",
+    id: "dr-nitya-nutan-misra",
+    slug: "dr-nitya-nutan-misra",
+    name: "Dr. Nitya Nutan Misra",
     qualification: "MBBS, MS (General Surgery), MCh (Oncology)",
     specialty: "Oncology",
     specialtySlug: "oncology",
     experience: "11 Years",
     bio: "Dr. Singh is a skilled oncologist providing early detection screenings and coordinating comprehensive cancer care plans.",
-    available: "Wed, Sat",
+    available: "Everyday",
     languages: ["Odia", "Hindi", "English"],
-    image: "/images/doctors/dr-meera-singh.webp",
+    image: "/images/doctors/dr-nitya-nutan-misra.webp",
+    website: "#", // TODO: replace with real URL
   },
   {
     id: "dr-suryakanta-parida",
@@ -100,21 +108,37 @@ export const doctors: Doctor[] = [
     specialtySlug: "gastroenterology",
     experience: "14 Years",
     bio: "Dr. Parida is a leading gastroenterologist with expertise in diagnosing and treating complex digestive tract and liver disorders.",
-    available: "Mon, Wed, Fri",
+    available: "Everyday",
     languages: ["Odia", "Hindi", "English"],
     image: "/images/doctors/dr-Suryakanta-parida.webp",
+    website: "#", // TODO: replace with real URL
   },
   {
-    id: "dr-ramesh-nayak",
-    slug: "dr-ramesh-nayak",
-    name: "Dr. Ramesh Nayak",
+    id: "dr-soumya-ranjan-behera",
+    slug: "dr-soumya-ranjan-behera",
+    name: "Dr. Soumya Ranjan Behera",
     qualification: "MBBS, MS, MCh (Urology)",
     specialty: "Urology",
     specialtySlug: "urology",
     experience: "16 Years",
     bio: "Dr. Nayak is a highly skilled urologist specializing in advanced minimally invasive surgeries and comprehensive urological care.",
-    available: "Tue, Thu, Sat",
+    available: "Everyday",
     languages: ["Odia", "Hindi", "English"],
-    image: "/images/doctors/dr-ramesh-nayak.webp",
+    image: "/images/doctors/dr-soumya-ranjan-behera.webp",
+    website: "#", // TODO: replace with real URL
+  },
+  {
+    id: "dr-niramaya-madhual",
+    slug: "dr-niramaya-madhual",
+    name: "Dr. Niramaya Madhual",
+    qualification: "MBBS, MS (O&G)",
+    specialty: "Gynecology & IVF",
+    specialtySlug: "gynecology",
+    experience: "10+ Years",
+    bio: "Dr. Madhual is a highly skilled Cosmetic Gynecologist and Laparoscopic Surgeon. She is a Fellowship trained specialist in Reproductive Medicine, and serves as an IVF Head and Asst Prof (O&G).",
+    available: "Everyday",
+    languages: ["Odia", "Hindi", "English"],
+    image: "/images/doctors/niramaya-madhual.webp",
+    website: "#", // TODO: replace with real URL
   },
 ];
