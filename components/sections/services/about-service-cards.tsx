@@ -46,7 +46,17 @@ export function AboutServiceCards() {
   };
 
   return (
-    <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-5">
+    <div className="mt-10">
+      {/* Section heading */}
+      <div className="flex items-center gap-3 mb-5">
+        <div className="h-px flex-1 bg-blue-100" />
+        <p className="text-xs font-bold uppercase tracking-widest text-primary whitespace-nowrap">
+          Our Other Services
+        </p>
+        <div className="h-px flex-1 bg-blue-100" />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
       {SERVICE_CARDS.map((item, index) => {
         const isOpen = openIndex === index;
 
@@ -126,6 +136,7 @@ export function AboutServiceCards() {
           </div>
         );
       })}
+    </div>
     </div>
   );
 }
