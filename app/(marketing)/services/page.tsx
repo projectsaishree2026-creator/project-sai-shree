@@ -6,6 +6,7 @@ import { services } from "@/data/services";
 import { clinic } from "@/data/clinic";
 import { doctors } from "@/data/doctors";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { AboutServiceCards } from "@/components/sections/services/about-service-cards";
 
 export const metadata: Metadata = {
   title: "Our Medical Departments & Services | Sai Shree Polyclinic, Cuttack",
@@ -140,6 +141,9 @@ export default function ServicesPage() {
                   <span>Mon–Sat: 9 AM – 7 PM</span>
                 </div>
               </div>
+
+              {/* ── Service Feature Cards ── */}
+              <AboutServiceCards />
             </div>
           </div>
         </section>

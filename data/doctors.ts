@@ -83,7 +83,7 @@ export const doctors: Doctor[] = [
     available: "Everyday",
     languages: ["Odia", "Hindi", "English"],
     image: "/images/doctors/dr-asutosh-rout-1.webp",
-    website: "https://www.drasutoshrout.com/", // TODO: replace with real URL
+    website: "#", // TODO: replace with real URL
   },
   {
     id: "dr-nitya-nutan-misra",
@@ -110,7 +110,7 @@ export const doctors: Doctor[] = [
     bio: "Dr. Parida is a leading gastroenterologist with expertise in diagnosing and treating complex digestive tract and liver disorders.",
     available: "Everyday",
     languages: ["Odia", "Hindi", "English"],
-    image: "/images/doctors/dr-Suryakanta-parida-1.webp",
+    image: "/images/doctors/dr-Suryakanta-parida.webp",
     website: "#", // TODO: replace with real URL
   },
   {
