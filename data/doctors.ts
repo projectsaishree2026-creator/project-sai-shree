@@ -26,7 +26,7 @@ export const doctors: Doctor[] = [
     bio: "Dr. Sahu is a leading endocrinologist with over 12 years of experience managing complex metabolic and hormonal disorders.",
     available: "Mon, Wed, Fri",
     languages: ["Odia", "Hindi", "English"],
-    image: "/images/doctors/dr-sandeep-kumar-sahu-1.webp",
+    image: "/images/doctors/dr-sandeep-kumar-Sahu-1.webp",
     website: "https://www.drsandeepkumarsahu.com/",
   },
   {
@@ -110,7 +110,7 @@ export const doctors: Doctor[] = [
     bio: "Dr. Parida is a leading gastroenterologist with expertise in diagnosing and treating complex digestive tract and liver disorders.",
     available: "Everyday",
     languages: ["Odia", "Hindi", "English"],
-    image: "/images/doctors/dr-Suryakanta-parida.webp",
+    image: "/images/doctors/dr-Suryakanta-parida-1.webp",
     website: "#", // TODO: replace with real URL
   },
   {
