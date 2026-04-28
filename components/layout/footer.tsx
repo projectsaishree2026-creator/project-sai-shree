@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Phone, MapPin, Clock, Mail, Activity } from "lucide-react";
+import { Phone, MapPin, Clock, Mail } from "lucide-react";
+import Image from "next/image";
 import { clinic } from "@/data/clinic";
 import { navigation } from "@/config/navigation";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
@@ -14,12 +15,13 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-2.5 mb-4">
-              <div
-                className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md"
-                style={{ background: "linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)" }}
-              >
-                <Activity className="w-5 h-5 text-white" />
-              </div>
+              <Image
+                src="/logo.png"
+                alt="Sai Shree Polyclinic Logo"
+                width={36}
+                height={36}
+                className="w-9 h-9 object-contain rounded-xl shadow-md"
+              />
               <div>
                 <span className="block text-white text-[14px] leading-tight" style={{ fontWeight: 800, fontFamily: "var(--font-display)" }}>
                   Sai Shree Polyclinic
