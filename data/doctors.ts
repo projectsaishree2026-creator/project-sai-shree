@@ -55,7 +55,7 @@ export const doctors: Doctor[] = [
     available: "Everyday",
     languages: ["Odia", "Hindi", "English"],
     image: "/images/doctors/dr-manasi-Das.webp",
-    website: "#", // TODO: replace with real URL
+    website: "https://www.drmanasidas.com/", // TODO: replace with real URL
   },
   {
     id: "dr-abhash-dashs",
@@ -83,7 +83,7 @@ export const doctors: Doctor[] = [
     available: "Everyday",
     languages: ["Odia", "Hindi", "English"],
     image: "/images/doctors/dr-asutosh-rout-1.webp",
-    website: "#", // TODO: replace with real URL
+    website: "https://www.drasutoshrout.com/", // TODO: replace with real URL
   },
   {
     id: "dr-nitya-nutan-misra",
@@ -111,7 +111,7 @@ export const doctors: Doctor[] = [
     available: "Everyday",
     languages: ["Odia", "Hindi", "English"],
     image: "/images/doctors/dr-Suryakanta-parida-1.webp",
-    website: "#", // TODO: replace with real URL
+    website: "https://www.drsuryakantaparida.com/", // TODO: replace with real URL
   },
   {
     id: "dr-soumya-ranjan-behera",
