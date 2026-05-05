@@ -159,7 +159,7 @@ export function Hero() {
             >
               <span className="flex items-center gap-1.5 text-sm text-gray-500">
                 <MapPin size={14} className="text-primary shrink-0" />
-                Sai shree polyclinic Cuttack At- Kathagola, Ring Rd, near Shree Maa, Cuttack, Odisha 753110
+                Sai shree polyclinic Cuttack At- Kathagola, Ring Rd, near Shree Maa Hospital, Cuttack, Odisha 753110 
               </span>
               <span className="flex items-center gap-1.5 text-sm text-gray-500">
                 <Clock size={14} className="text-primary" />

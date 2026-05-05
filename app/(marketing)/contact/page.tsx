@@ -97,7 +97,7 @@ export default function ContactPage() {
           <h2 className="font-display font-bold text-2xl text-gray-900 mb-2 flex items-center gap-2" style={{ fontFamily: "var(--font-display)" }}>
             <Navigation size={22} className="text-primary" /> Find Us on the Map
           </h2>
-          <p className="text-sm text-gray-500 mb-5">Sai shree polyclinic Cuttack At- Kathagola, Ring Rd, near Shree Maa, Cuttack, Odisha 753110</p>
+          <p className="text-sm text-gray-500 mb-5">Sai shree polyclinic Cuttack At- Kathagola, Ring Rd, near Shree Maa Hospital, Cuttack, Odisha 753110 </p>
           <div className="rounded-3xl overflow-hidden shadow-lg border border-gray-100 h-[400px]">
             <iframe
               title="Sai Shree Polyclinic Map"
