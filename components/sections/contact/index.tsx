@@ -30,7 +30,7 @@ export function ContactSection() {
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed">{clinic.address}</p>
               <a
-                href={`https://maps.google.com/?q=Sai+Shree+Polyclinic+Cuttack+Odisha`}
+                href={`https://maps.google.com/?q=${encodeURIComponent(clinic.address)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-primary text-xs font-semibold mt-3 hover:underline"

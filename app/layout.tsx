@@ -79,8 +79,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               telephone: clinic.phoneDisplay,
               openingHours: "Mo-Sa 09:00-19:00",
               url: "https://saishreepolyclinic.com",
-              priceRange: "₹₹",
-              hasMap: "https://maps.google.com/?q=Sai+Shree+Polyclinic+Cuttack",
+              address: "Sai shree polyclinic Cuttack At- Kathagola, Ring Rd, near Shree Maa, Cuttack, Odisha 753110",
+              hasMap: `https://maps.google.com/?q=${encodeURIComponent("Sai shree polyclinic Cuttack At- Kathagola, Ring Rd, near Shree Maa, Cuttack, Odisha 753110")}`,
               aggregateRating: {
                 "@type": "AggregateRating",
                 ratingValue: "4.9",
