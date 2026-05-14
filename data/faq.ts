@@ -52,7 +52,7 @@ export const faqs: FAQ[] = [
     id: "7",
     question: "Is parking available near the clinic?",
     answer:
-      "Yes, parking space is available near the clinic on Ring Road, Kathagola. Our location near Shree Maa makes it easily accessible from all parts of Cuttack.",
+      "Yes, parking space is available near the clinic on Kathagola Rd. Our location near shreema Hospital makes it easily accessible from all parts of Cuttack.",
     category: "General",
   },
   {

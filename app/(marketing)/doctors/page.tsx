@@ -78,7 +78,7 @@ export default function DoctorsPage() {
               <div className="flex flex-wrap gap-5 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
                   <MapPin size={15} className="text-primary shrink-0" />
-                  <span>Sai shree polyclinic Cuttack At- Kathagola, Ring Rd, near Shree Maa Hospital, Cuttack, Odisha 753110 </span>
+                  <span>{clinic.address}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone size={15} className="text-primary shrink-0" />

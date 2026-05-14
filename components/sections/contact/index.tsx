@@ -14,7 +14,7 @@ export function ContactSection() {
               eyebrow="Find Us"
               title="Visit Sai Shree"
               titleHighlight="Polyclinic"
-              subtitle="Conveniently located on Ring Road, Kathagola, Cuttack — easily accessible from all parts of the city."
+              subtitle="Conveniently located on Kathagola Rd, near shreema Hospital — easily accessible from all parts of the city."
             />
           </div>
         </FadeUp>

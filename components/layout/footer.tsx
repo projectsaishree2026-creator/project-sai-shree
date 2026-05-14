@@ -117,7 +117,7 @@ export function Footer() {
       <div className="border-t border-gray-800">
         <div className="section-container py-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-gray-500">
           <p>© {new Date().getFullYear()} {clinic.name}. All rights reserved.</p>
-          <p>Sai shree polyclinic Cuttack At- Kathagola, Ring Rd, near Shree Maa Hospital, Cuttack, Odisha 753110 </p>
+          <p>{clinic.address}</p>
         </div>
       </div>
     </footer>

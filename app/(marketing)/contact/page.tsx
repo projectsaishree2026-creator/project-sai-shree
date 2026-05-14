@@ -6,7 +6,7 @@ import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Contact Us",
-  description: `Contact ${clinic.name} — Book an appointment, get directions, or reach us by phone or WhatsApp. Located at Kathagola, Ring Rd, Cuttack, Odisha.`,
+  description: `Contact ${clinic.name} — Book an appointment, get directions, or reach us by phone or WhatsApp. Located at Kathagola Rd, Mangalabag, Cuttack, Odisha.`,
 };
 
 export default function ContactPage() {
@@ -97,7 +97,7 @@ export default function ContactPage() {
           <h2 className="font-display font-bold text-2xl text-gray-900 mb-2 flex items-center gap-2" style={{ fontFamily: "var(--font-display)" }}>
             <Navigation size={22} className="text-primary" /> Find Us on the Map
           </h2>
-          <p className="text-sm text-gray-500 mb-5">Sai shree polyclinic Cuttack At- Kathagola, Ring Rd, near Shree Maa Hospital, Cuttack, Odisha 753110 </p>
+          <p className="text-sm text-gray-500 mb-5">{clinic.address}</p>
           <div className="rounded-3xl overflow-hidden shadow-lg border border-gray-100 h-[400px]">
             <iframe
               title="Sai Shree Polyclinic Map"

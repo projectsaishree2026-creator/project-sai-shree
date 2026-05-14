@@ -115,8 +115,8 @@ export default function AboutPage() {
               </p>
 
               <p>
-                Conveniently located on Ring Road, Kathagola — near Shree Maa
-                Temple — Sai Shree Polyclinic serves thousands of patients every
+                Conveniently located on Kathagola Rd, near shreema Hospital,
+                Sai Shree Polyclinic serves thousands of patients every
                 year from Cuttack, Bhubaneswar, and surrounding districts of
                 Odisha. We are committed to delivering affordable,
                 patient-centered, and advanced medical care, making us a
