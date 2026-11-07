@@ -1,149 +1,101 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { useRef } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { testimonials } from "@/data/testimonials";
-import { SectionHeader } from "@/components/shared/section-header";
+import { clinic } from "@/data/clinic";
+import { SectionIndex } from "@/components/shared/section-index";
 import { RatingStars } from "@/components/shared/rating-stars";
-import { FadeUp } from "@/components/animations";
 
 export function Testimonials() {
-  const [current, setCurrent] = useState(0);
-  const [autoplay, setAutoplay] = useState(true);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
-  const total = testimonials.length;
-
-  const go = (idx: number) => {
-    setCurrent((idx + total) % total);
-    setAutoplay(false);
-    setTimeout(() => setAutoplay(true), 5000);
-  };
-
-  useEffect(() => {
-    if (!autoplay) return;
-    timerRef.current = setTimeout(() => {
-      setCurrent((c) => (c + 1) % total);
-    }, 4500);
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, [current, autoplay, total]);
-
-  // Show 3 at a time on lg, 2 on md, 1 on mobile
-  const getVisible = () => {
-    const result = [];
-    for (let i = 0; i < 3; i++) {
-      result.push(testimonials[(current + i) % total]);
-    }
-    return result;
+  const scroll = (dir: 1 | -1) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.querySelector<HTMLElement>("[data-card]");
+    const step = card ? card.offsetWidth : track.clientWidth * 0.8;
+    track.scrollBy({ left: dir * step, behavior: "smooth" });
   };
 
   return (
-    <section className="section-py bg-white">
-      <div className="section-container">
-        <FadeUp>
-          <div className="mb-12">
-            <SectionHeader
-              eyebrow="Patient Stories"
-              title="What Our Patients"
-              titleHighlight="Say About Us"
-              subtitle="Real experiences from patients who trusted Sai Shree Polyclinic with their health."
-            />
-          </div>
-        </FadeUp>
+    <section className="frame section bg-paper overflow-hidden">
+      <div className="container-x">
+        <SectionIndex index={5} label="Patient stories" meta="Verified Google reviews" />
 
-        {/* Carousel */}
-        <div className="relative">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {getVisible().map((t, i) => (
-              <div
-                key={`${t.id}-${i}`}
-                className={`glass-card p-6 transition-all duration-500 ${
-                  i === 0 ? "opacity-100 translate-y-0" : "opacity-90 translate-y-1"
-                }`}
-              >
-                {/* Quote icon */}
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-                  style={{ background: `${t.color}14` }}
+        <div className="mt-14 md:mt-20 flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+          <h2 className="display-md max-w-3xl">
+            Real recoveries, <span className="text-brand-500">in our patients&apos; own words.</span>
+          </h2>
+          <div className="flex items-end gap-8">
+            <div>
+              <p className="font-display text-6xl font-semibold tracking-[-0.06em] text-ink-900">
+                {clinic.stats.rating}
+                <span className="text-ink-300">/5</span>
+              </p>
+              <div className="mt-2 flex items-center gap-3">
+                <RatingStars rating={5} size={14} />
+                <a
+                  href={clinic.google.reviewsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="label-mono text-[0.6875rem] text-ink-500 underline-offset-4 hover:text-brand-600 hover:underline"
                 >
-                  <Quote size={18} style={{ color: t.color }} />
-                </div>
-
-                <RatingStars rating={t.rating} className="mb-3" />
-
-                <p className="text-sm text-gray-600 leading-relaxed mb-5 italic">
-                  &ldquo;{t.review}&rdquo;
-                </p>
-
-                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold"
-                    style={{ background: `${t.color}18`, color: t.color }}
-                  >
-                    {t.initials}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-sm text-gray-900">{t.name}</p>
-                    <p className="text-xs text-gray-400">
-                      {t.location} · {t.specialty}
-                    </p>
-                  </div>
-                </div>
+                  {clinic.stats.reviewCount} Google reviews
+                </a>
               </div>
-            ))}
-          </div>
-
-          {/* Controls */}
-          <div className="flex justify-center items-center gap-4 mt-8">
-            <button
-              onClick={() => go(current - 1)}
-              className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:border-primary hover:text-primary transition-all shadow-sm"
-            >
-              <ChevronLeft size={18} />
-            </button>
-
-            {/* Dots */}
-            <div className="flex gap-2">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => go(i)}
-                  className="transition-all duration-300 rounded-full"
-                  style={{
-                    width: i === current ? 20 : 8,
-                    height: 8,
-                    background: i === current ? "var(--color-primary)" : "#E2E8F0",
-                  }}
-                />
-              ))}
             </div>
-
-            <button
-              onClick={() => go(current + 1)}
-              className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:border-primary hover:text-primary transition-all shadow-sm"
-            >
-              <ChevronRight size={18} />
-            </button>
+            <div className="hidden sm:flex">
+              <button
+                type="button"
+                onClick={() => scroll(-1)}
+                aria-label="Previous reviews"
+                className="flex h-12 w-12 items-center justify-center fx-fill fx-press border border-ink-900 text-ink-900 hover:text-white"
+              >
+                <ArrowLeft size={18} />
+              </button>
+              <button
+                type="button"
+                onClick={() => scroll(1)}
+                aria-label="Next reviews"
+                className="-ml-px flex h-12 w-12 items-center justify-center fx-fill fx-press border border-ink-900 text-ink-900 hover:text-white"
+              >
+                <ArrowRight size={18} />
+              </button>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Google rating badge */}
-        <FadeUp delay={0.2}>
-          <div className="mt-10 flex justify-center">
-            <div className="inline-flex items-center gap-3 bg-white border border-gray-100 rounded-2xl px-6 py-3.5 shadow-sm">
-              <div className="flex items-center gap-1.5">
-                <RatingStars rating={5} size={16} />
-              </div>
-              <div className="w-px h-6 bg-gray-200" />
-              <p className="text-sm text-gray-600">
-                <span className="font-bold text-gray-900">4.9/5</span> based on{" "}
-                <span className="font-semibold text-primary">500+ Google Reviews</span>
-              </p>
+      <div
+        ref={trackRef}
+        className="no-scrollbar mt-12 md:mt-16 flex snap-x snap-mandatory overflow-x-auto scroll-pl-5 px-5 md:scroll-pl-10 md:px-10 xl:px-[max(2.5rem,calc((100vw-1360px)/2+2.5rem))] xl:scroll-pl-[max(2.5rem,calc((100vw-1360px)/2+2.5rem))]"
+        role="region"
+        aria-label="Patient reviews"
+        tabIndex={0}
+      >
+        {testimonials.map((t, i) => (
+          <figure
+            key={t.id}
+            data-card
+            className="-ml-px flex w-[88%] shrink-0 snap-start flex-col border border-line-strong bg-white p-7 md:p-9 first:ml-0 sm:w-[26rem]"
+          >
+            <div className="flex items-center justify-between label-mono text-[0.6875rem]">
+              <span className="text-ink-400">{String(i + 1).padStart(2, "0")}</span>
+              <span className="text-brand-600">{t.specialty}</span>
             </div>
-          </div>
-        </FadeUp>
+            <blockquote className="mt-10 flex-1 font-serif text-[1.625rem] leading-[1.25] text-ink-900">
+              “{t.review}”
+            </blockquote>
+            <figcaption className="mt-10 flex items-center justify-between gap-3 border-t border-line pt-5">
+              <span>
+                <span className="block font-semibold text-ink-900">{t.name}</span>
+                <span className="block label-mono text-[0.625rem] text-ink-500">{t.location}</span>
+              </span>
+              <RatingStars rating={t.rating} size={13} />
+            </figcaption>
+          </figure>
+        ))}
       </div>
     </section>
   );

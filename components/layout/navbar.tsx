@@ -1,218 +1,249 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Phone, ChevronDown } from "lucide-react";
-import Image from "next/image";
+import { Menu, X, Phone, ChevronDown, ArrowRight, ArrowUpRight } from "lucide-react";
 import { navigation } from "@/config/navigation";
 import { clinic } from "@/data/clinic";
-import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { services } from "@/data/services";
+import { Brand } from "@/components/shared/brand";
+import { OpenStatus } from "@/components/shared/open-status";
 import { cn } from "@/lib/utils";
+
+const pad = (n: number) => String(n).padStart(2, "0");
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const servicesRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   /** True when `href` matches the current route (exact for "/", prefix for all others). */
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  const links = navigation.main.filter((item) => item.href !== "/");
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handler);
-    return () => window.removeEventListener("scroll", handler);
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
+  // Close menus when the route changes (adjusting state during render, not in an effect)
+  const [prevPath, setPrevPath] = useState(pathname);
+  if (pathname !== prevPath) {
+    setPrevPath(pathname);
     setMobileOpen(false);
-  }, [pathname]);
+    setServicesOpen(false);
+  }
+
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    if (!servicesOpen) return;
+    const onClick = (e: MouseEvent) => {
+      if (!servicesRef.current?.contains(e.target as Node)) setServicesOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setServicesOpen(false);
+    document.addEventListener("mousedown", onClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [servicesOpen]);
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-white/90 backdrop-blur-xl shadow-sm border-b border-blue-50"
-          : "bg-transparent"
-      )}
-    >
-      {/* Main nav */}
-      <div className="section-container">
-        <div className="flex items-center justify-between h-16 md:h-[68px] relative">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5">
-            <Image
-              src="/logo.png"
-              alt="Sai Shree Polyclinic Logo"
-              width={36}
-              height={36}
-              className="w-9 h-9 object-contain rounded-xl shadow-md"
-              priority
-            />
-            <div>
-              <span
-                className="block font-display text-[14px] leading-tight"
-                style={{ fontWeight: 800, color: "var(--color-text)", fontFamily: "var(--font-display)" }}
-              >
-                Sai Shree Polyclinic
-              </span>
-              <span
-                className="block text-[10px] leading-none"
-                style={{ color: "var(--color-primary)", fontWeight: 600, letterSpacing: "0.06em" }}
-              >
-                Multi-Specialty Care
-              </span>
-            </div>
-          </Link>
+    <>
+      <header
+        className={cn(
+          "sticky top-0 z-50 border-b bg-ink-900 transition-[border-color,box-shadow] duration-300",
+          scrolled
+            ? "border-white/10 shadow-[0_10px_30px_-12px_rgb(5_13_22/0.6)]"
+            : "border-white/[0.06]"
+        )}
+      >
+        <div className="container-x flex h-[5rem] items-center justify-between gap-6">
+          <Brand inverted preload />
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-1">
-          {navigation.main.map((item) =>
-              item.label === "Services" ? (
-                <div
-                  key="services"
-                  className="relative"
-                  onMouseEnter={() => setServicesOpen(true)}
-                  onMouseLeave={() => setServicesOpen(false)}
-                >
+          <nav aria-label="Main" className="hidden lg:flex items-center gap-5 xl:gap-7">
+            {links.map((item, i) => {
+              const num = <span className="hidden xl:inline font-mono text-[0.6875rem] text-ink-500">{pad(i + 1)}</span>;
+              const linkClass = cn(
+                "flex items-center gap-1.5 whitespace-nowrap text-[0.9375rem] font-medium transition-colors",
+                isActive(item.href) ? "text-brand-300" : "text-ink-200 hover:text-white"
+              );
+
+              if (item.label !== "Services") {
+                return (
                   <Link
+                    key={item.href}
                     href={item.href}
+                    aria-current={isActive(item.href) ? "page" : undefined}
+                    className={linkClass}
+                  >
+                    {num}
+                    {item.label}
+                  </Link>
+                );
+              }
+
+              return (
+                <div key={item.href} ref={servicesRef} className="relative">
+                  <button
+                    type="button"
+                    aria-expanded={servicesOpen}
+                    aria-controls="services-menu"
+                    onClick={() => setServicesOpen((o) => !o)}
+                    className={linkClass}
+                  >
+                    {num}
+                    Services
+                    <ChevronDown
+                      size={15}
+                      className={cn("transition-transform duration-200", servicesOpen && "rotate-180")}
+                    />
+                  </button>
+
+                  <div
+                    id="services-menu"
                     className={cn(
-                      "flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200",
-                      isActive("/services")
-                        ? "text-primary font-semibold"
-                        : "text-gray-700 hover:text-primary hover:bg-primary/5"
+                      "absolute left-1/2 top-full mt-6 w-[44rem] -translate-x-1/2 border border-white/10 bg-ink-900 shadow-lift transition-all duration-200",
+                      servicesOpen ? "visible opacity-100 translate-y-0" : "invisible opacity-0 -translate-y-1"
                     )}
                   >
-                    <span
-                      className={cn(
-                        "relative pb-0.5",
-                        isActive("/services") &&
-                          "after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:rounded-full after:bg-primary"
-                      )}
-                    >
-                      Services
-                    </span>
-                    <ChevronDown
-                      size={14}
-                      className={cn("transition-transform", servicesOpen && "rotate-180")}
-                    />
-                  </Link>
-                  {servicesOpen && (
-                    <div className="absolute top-full left-0 mt-1 w-56 glass-card py-2 z-50">
-                      {navigation.services.map((s) => (
+                    <div className="flex items-center justify-between border-b border-white/10 px-5 py-3 label-mono">
+                      <span className="text-brand-300">Departments</span>
+                      <span className="text-ink-500">{services.length} specialties</span>
+                    </div>
+                    <div className="grid grid-cols-2">
+                      {services.map((s, j) => (
                         <Link
-                          key={s.href}
-                          href={s.href}
+                          key={s.id}
+                          href={`/services/${s.slug}`}
+                          tabIndex={servicesOpen ? 0 : -1}
                           className={cn(
-                            "block px-4 py-2 text-sm transition-colors",
-                            pathname === s.href
-                              ? "text-primary font-semibold bg-primary/8"
-                              : "text-gray-700 hover:text-primary hover:bg-primary/5"
+                            "group flex items-baseline gap-4 border-b border-white/[0.06] px-5 py-4 transition-colors",
+                            j % 2 === 0 && "border-r",
+                            pathname === `/services/${s.slug}` ? "bg-white/[0.04]" : "hover:bg-white/[0.04]"
                           )}
                         >
-                          {s.label}
+                          <span className="font-mono text-[0.6875rem] text-ink-500">{pad(j + 1)}</span>
+                          <span className="flex-1">
+                            <span className="block font-medium text-white">{s.name}</span>
+                            <span className="mt-1 block text-[0.8125rem] leading-snug text-ink-400 line-clamp-1">
+                              {s.shortDesc}
+                            </span>
+                          </span>
+                          <ArrowUpRight
+                            size={15}
+                            className="text-ink-500 transition-colors group-hover:text-brand-300"
+                          />
                         </Link>
                       ))}
                     </div>
-                  )}
+                    <Link
+                      href="/services"
+                      tabIndex={servicesOpen ? 0 : -1}
+                      className="flex items-center justify-between px-5 py-4 label-mono text-white hover:text-brand-300"
+                    >
+                      All services · pathology · endoscopy · pharmacy
+                      <ArrowRight size={14} />
+                    </Link>
+                  </div>
                 </div>
-              ) : (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "px-3 py-2 rounded-lg text-sm transition-all duration-200",
-                    isActive(item.href)
-                      ? "text-primary font-semibold"
-                      : "text-gray-700 font-medium hover:text-primary hover:bg-primary/5"
-                  )}
-                >
-                  <span
-                    className={cn(
-                      "relative pb-0.5",
-                      isActive(item.href) &&
-                        "after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:rounded-full after:bg-primary"
-                    )}
-                  >
-                    {item.label}
-                  </span>
-                </Link>
-              )
-            )}
+              );
+            })}
           </nav>
 
-          {/* CTA buttons */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-3">
+            <OpenStatus compact className="hidden 2xl:inline-flex mr-2" />
             <a
               href={`tel:+91${clinic.phone}`}
-              className="btn-outline text-sm py-2 px-4"
+              className="fx-phone fx-fill fx-press hidden md:flex lg:hidden xl:flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/20 text-white [--fx-fill:var(--color-brand-500)] hover:border-brand-500"
+              aria-label={`Call ${clinic.phoneDisplay}`}
+              title={clinic.phoneDisplay}
             >
-              <Phone size={14} />
-              Call Now
+              <Phone size={18} strokeWidth={1.75} />
             </a>
-            <a
-              href={getWhatsAppUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-whatsapp text-sm py-2 px-4"
+            <Link
+              href="/contact#appointment"
+              className="btn-primary hidden md:inline-flex h-12 shrink-0 rounded-full px-7 shadow-[0_8px_24px_-8px_rgb(14_150_228/0.7)]"
             >
-              <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.553 4.113 1.523 5.843L.057 23.486a.5.5 0 0 0 .613.614l5.74-1.466A11.957 11.957 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.82 9.82 0 0 1-5.022-1.38l-.36-.213-3.736.954.97-3.647-.233-.375A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z" />
-              </svg>
-              WhatsApp
-            </a>
+              Book appointment
+            </Link>
+            <button
+              type="button"
+              className="fx-press lg:hidden -mr-2 flex h-11 w-11 items-center justify-center text-white transition-transform"
+              onClick={() => setMobileOpen((o) => !o)}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            >
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
-
-          {/* Mobile menu toggle */}
-          <button
-            className="lg:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
         </div>
-      </div>
+      </header>
 
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 shadow-xl">
-          <div className="section-container py-4 flex flex-col gap-1">
-            {navigation.main.map((item) => (
+      {/* Mobile menu — outside the header so backdrop-filter doesn't trap position:fixed */}
+      <div
+        id="mobile-menu"
+        className={cn(
+          "lg:hidden fixed inset-x-0 top-[5rem] bottom-0 z-40 overflow-y-auto bg-ink-900 transition-[opacity,visibility] duration-200",
+          mobileOpen ? "visible opacity-100" : "invisible opacity-0"
+        )}
+      >
+        <nav aria-label="Mobile" className="container-x py-8">
+          <OpenStatus />
+          <ul className="mt-8 border-t border-white/10">
+            {navigation.main.map((item, i) => (
+              <li key={item.href} className="border-b border-white/10">
+                <Link
+                  href={item.href}
+                  className={cn(
+                    "flex items-baseline gap-4 py-5 font-display text-3xl font-semibold tracking-[-0.04em]",
+                    isActive(item.href) ? "text-brand-300" : "text-white"
+                  )}
+                >
+                  <span className="font-mono text-xs font-normal tracking-normal text-ink-500">{pad(i + 1)}</span>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-10 mb-4 label-mono text-brand-300">Departments</p>
+          <div className="flex flex-wrap gap-2">
+            {services.map((s) => (
               <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200",
-                  isActive(item.href)
-                    ? "text-primary bg-primary/8 font-semibold"
-                    : "text-gray-700 hover:text-primary hover:bg-gray-50"
-                )}
+                key={s.id}
+                href={`/services/${s.slug}`}
+                className="rounded border border-white/15 px-3 py-2 text-sm text-ink-200"
               >
-                {item.label}
+                {s.name}
               </Link>
             ))}
-            <div className="mt-3 flex flex-col gap-2 pt-3 border-t border-gray-100">
-              <a href={`tel:+91${clinic.phone}`} className="btn-outline justify-center">
-                <Phone size={16} /> {clinic.phoneDisplay}
-              </a>
-              <a
-                href={getWhatsAppUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-whatsapp justify-center"
-              >
-                WhatsApp Us
-              </a>
-            </div>
           </div>
-        </div>
-      )}
-    </header>
+
+          <div className="mt-10 grid grid-cols-1 gap-3">
+            <Link href="/contact#appointment" className="btn-primary btn-lg">
+              Book appointment <ArrowRight size={16} />
+            </Link>
+            <a href={`tel:+91${clinic.phone}`} className="fx-phone btn-ghost-light btn-lg">
+              <Phone size={16} /> {clinic.phoneDisplay}
+            </a>
+          </div>
+        </nav>
+      </div>
+    </>
   );
 }

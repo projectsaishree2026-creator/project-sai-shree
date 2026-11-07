@@ -1,108 +1,69 @@
-import { MapPin, Phone, Clock, Mail, Navigation } from "lucide-react";
-import { clinic } from "@/data/clinic";
+import { ArrowUpRight } from "lucide-react";
+import { clinic, directionsUrl } from "@/data/clinic";
 import { SectionHeader } from "@/components/shared/section-header";
-import { FadeUp } from "@/components/animations";
-import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 export function ContactSection() {
+  const mapsDirections = directionsUrl();
+
+  const rows = [
+    { label: "Address", value: clinic.address },
+    { label: "Phone", value: clinic.phoneDisplay, href: `tel:+91${clinic.phone}` },
+    { label: "Email", value: clinic.email, href: `mailto:${clinic.email}` },
+    { label: "Hours", value: "Mon – Sat · 9:00 AM – 7:00 PM · Sunday closed" },
+  ];
+
   return (
-    <section className="section-py mesh-bg">
-      <div className="section-container">
-        <FadeUp>
-          <div className="mb-12">
-            <SectionHeader
-              eyebrow="Find Us"
-              title="Visit Sai Shree"
-              titleHighlight="Polyclinic"
-              subtitle="Conveniently located on Kathagola Rd, near shreema Hospital — easily accessible from all parts of the city."
+    <section className="frame section bg-white">
+      <div className="container-x">
+        <SectionHeader
+          index={8}
+          eyebrow="Find us"
+          meta="Mangalabag · Cuttack · 753001"
+          title="Visit Sai Shree"
+          titleHighlight="Polyclinic."
+          subtitle="Conveniently located on Kathagola Rd, near Shreema Hospital — easily accessible from all parts of the city."
+        />
+
+        <div className="mt-14 md:mt-20 grid grid-cols-1 border border-line-strong lg:grid-cols-[minmax(0,1fr)_1.4fr]">
+          <div className="flex flex-col">
+            <dl>
+              {rows.map((r) => (
+                <div key={r.label} className="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-4 border-b border-line px-6 py-5 md:px-8">
+                  <dt className="label-mono pt-0.5 text-[0.6875rem] text-ink-400">{r.label}</dt>
+                  <dd className="text-[0.9375rem] leading-relaxed text-ink-800">
+                    {r.href ? (
+                      <a href={r.href} className="break-all hover:text-brand-600">
+                        {r.value}
+                      </a>
+                    ) : (
+                      r.value
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <a
+              href={mapsDirections}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="fx-fill group mt-auto flex items-center justify-between bg-ink-900 px-6 py-6 md:px-8 label-mono text-white [--fx-fill:var(--color-brand-600)]"
+            >
+              Get directions
+              <ArrowUpRight size={18} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </a>
+          </div>
+
+          <div className="min-h-[24rem] border-t border-line-strong lg:border-t-0 lg:border-l">
+            <iframe
+              title="Map showing Sai Shree Polyclinic location"
+              src={clinic.mapEmbedUrl}
+              className="h-full min-h-[24rem] w-full grayscale-[40%]"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
-        </FadeUp>
-
-        <div className="grid lg:grid-cols-2 gap-8 items-start">
-          {/* Contact info */}
-          <FadeUp className="space-y-5">
-            {/* Address */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-              <h3 className="font-display font-bold text-base text-gray-900 mb-4 flex items-center gap-2" style={{ fontFamily: "var(--font-display)" }}>
-                <MapPin size={18} className="text-primary" />
-                Address
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">{clinic.address}</p>
-              <a
-                href={`https://maps.google.com/?q=${encodeURIComponent(clinic.address)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-primary text-xs font-semibold mt-3 hover:underline"
-              >
-                <Navigation size={13} />
-                Get Directions
-              </a>
-            </div>
-
-            {/* Phone */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-              <h3 className="font-display font-bold text-base text-gray-900 mb-4 flex items-center gap-2" style={{ fontFamily: "var(--font-display)" }}>
-                <Phone size={18} className="text-primary" />
-                Phone
-              </h3>
-              <a
-                href={`tel:+91${clinic.phone}`}
-                className="text-gray-600 text-sm hover:text-primary transition-colors font-medium"
-              >
-                {clinic.phoneDisplay}
-              </a>
-            </div>
-
-            {/* Hours */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-              <h3 className="font-display font-bold text-base text-gray-900 mb-4 flex items-center gap-2" style={{ fontFamily: "var(--font-display)" }}>
-                <Clock size={18} className="text-primary" />
-                Working Hours
-              </h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Monday – Saturday</span>
-                  <span className="font-semibold text-gray-900">9:00 AM – 7:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Sunday</span>
-                  <span className="font-semibold text-red-500">Closed</span>
-                </div>
-              </div>
-            </div>
-
-            {/* CTA buttons */}
-            <div className="flex gap-3">
-              <a href={`tel:+91${clinic.phone}`} className="btn-primary flex-1 justify-center">
-                <Phone size={16} /> Call Now
-              </a>
-              <a
-                href={getWhatsAppUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-whatsapp flex-1 justify-center"
-              >
-                WhatsApp
-              </a>
-            </div>
-          </FadeUp>
-
-          {/* Map */}
-          <FadeUp delay={0.15}>
-            <div className="rounded-3xl overflow-hidden shadow-lg border border-gray-100 h-[420px]">
-              <iframe
-                title="Sai Shree Polyclinic Location"
-                src={clinic.mapEmbedUrl}
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
-          </FadeUp>
         </div>
       </div>
     </section>

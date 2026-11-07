@@ -1,20 +1,27 @@
 "use client";
 
+import { useId } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarCheck, AlertCircle, User, Phone, MessageSquare } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { appointmentSchema, type AppointmentInput } from "@/lib/validations";
 import { getWhatsAppAppointmentUrl } from "@/lib/whatsapp";
+import { trackEvent } from "@/lib/analytics";
 import { services } from "@/data/services";
 import { doctors } from "@/data/doctors";
+import { WhatsAppIcon } from "@/components/shared/icons";
 import { cn } from "@/lib/utils";
 
 interface AppointmentFormProps {
   compact?: boolean;
+  /** Pre-select a department (service slug). */
+  defaultDepartment?: string;
 }
 
+export function AppointmentForm({ compact = false, defaultDepartment = "" }: AppointmentFormProps) {
+  const uid = useId();
+  const id = (name: string) => `${uid}-${name}`;
 
-export function AppointmentForm({ compact = false }: AppointmentFormProps) {
   const {
     register,
     handleSubmit,
@@ -22,150 +29,145 @@ export function AppointmentForm({ compact = false }: AppointmentFormProps) {
     formState: { errors },
   } = useForm<AppointmentInput>({
     resolver: zodResolver(appointmentSchema),
+    defaultValues: { department: defaultDepartment },
   });
 
   const watchDept = watch("department");
-  const filteredDoctors = doctors.filter(
-    (d) => d.specialtySlug === watchDept || watchDept === ""
-  );
+  const doctorOptions = watchDept ? doctors.filter((d) => d.specialtySlug === watchDept) : doctors;
 
   const onSubmit = (data: AppointmentInput) => {
-    const url = getWhatsAppAppointmentUrl(data);
-    window.open(url, "_blank");
+    trackEvent("generate_lead", { method: "appointment_form", department: data.department, page: window.location.pathname });
+    window.open(getWhatsAppAppointmentUrl(data), "_blank", "noopener,noreferrer");
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {/* Name */}
-      <div>
-        <label className="form-label">
-          <User size={13} className="inline mr-1.5 opacity-60" />
-          Full Name *
-        </label>
-        <input
-          {...register("name")}
-          placeholder="Your full name"
-          className={cn("form-input", errors.name && "border-red-400")}
-        />
-        {errors.name && (
-          <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
-            <AlertCircle size={11} />
-            {errors.name.message}
-          </p>
-        )}
-      </div>
-
-      {/* Phone */}
-      <div>
-        <label className="form-label">
-          <Phone size={13} className="inline mr-1.5 opacity-60" />
-          Mobile Number *
-        </label>
-        <div className="flex gap-2">
-          <span className="form-input w-16 flex-shrink-0 text-sm text-gray-500 bg-gray-50 flex items-center justify-center">
-            +91
-          </span>
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
+      <div className={cn("grid grid-cols-1 gap-5", !compact && "sm:grid-cols-2")}>
+        <Field label="Full name" htmlFor={id("name")} required error={errors.name?.message}>
           <input
-            {...register("phone")}
-            placeholder="10-digit mobile number"
-            maxLength={10}
-            className={cn("form-input flex-1", errors.phone && "border-red-400")}
+            id={id("name")}
+            {...register("name")}
+            autoComplete="name"
+            placeholder="Your full name"
+            aria-invalid={!!errors.name}
+            className="form-input"
           />
-        </div>
-        {errors.phone && (
-          <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
-            <AlertCircle size={11} />
-            {errors.phone.message}
-          </p>
-        )}
+        </Field>
+
+        <Field label="Mobile number" htmlFor={id("phone")} required error={errors.phone?.message}>
+          <div className="relative">
+            <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[0.9375rem] text-ink-500">
+              +91
+            </span>
+            <input
+              id={id("phone")}
+              {...register("phone")}
+              type="tel"
+              inputMode="numeric"
+              autoComplete="tel-national"
+              placeholder="10-digit number"
+              maxLength={10}
+              aria-invalid={!!errors.phone}
+              className="form-input pl-12"
+            />
+          </div>
+        </Field>
       </div>
 
-      {/* Department */}
-      <div>
-        <label className="form-label">Department / Specialty *</label>
-        <select
-          {...register("department")}
-          className={cn("form-input", errors.department && "border-red-400")}
-        >
-          <option value="">Select a department</option>
-          {services.map((s) => (
-            <option key={s.id} value={s.slug}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-        {errors.department && (
-          <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
-            <AlertCircle size={11} />
-            {errors.department.message}
-          </p>
-        )}
-      </div>
-
-      {/* Doctor (optional) */}
-      {!compact && (
-        <div>
-          <label className="form-label">Preferred Doctor (Optional)</label>
-          <select {...register("doctor")} className="form-input">
-            <option value="">Any available doctor</option>
-            {(watchDept ? filteredDoctors : doctors).map((d) => (
-              <option key={d.id} value={d.id}>
-                {d.name} — {d.specialty}
+      <div className={cn("grid grid-cols-1 gap-5", !compact && "sm:grid-cols-2")}>
+        <Field label="Department" htmlFor={id("department")} required error={errors.department?.message}>
+          <select
+            id={id("department")}
+            {...register("department")}
+            aria-invalid={!!errors.department}
+            className="form-input"
+          >
+            <option value="">Select a department</option>
+            {services.map((s) => (
+              <option key={s.id} value={s.slug}>
+                {s.name}
               </option>
             ))}
           </select>
-        </div>
-      )}
+        </Field>
 
-      {/* Date */}
-      <div>
-        <label className="form-label">
-          <CalendarCheck size={13} className="inline mr-1.5 opacity-60" />
-          Preferred Date *
-        </label>
-        <input
-          {...register("date")}
-          type="date"
-          min={new Date().toISOString().split("T")[0]}
-          className={cn("form-input", errors.date && "border-red-400")}
-        />
-        {errors.date && (
-          <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
-            <AlertCircle size={11} />
-            {errors.date.message}
-          </p>
-        )}
-      </div>
-
-      {/* Message (compact hides this) */}
-      {!compact && (
-        <div>
-          <label className="form-label">
-            <MessageSquare size={13} className="inline mr-1.5 opacity-60" />
-            Additional Notes (Optional)
-          </label>
-          <textarea
-            {...register("message")}
-            placeholder="Briefly describe your concern..."
-            rows={3}
-            className="form-input resize-none"
+        <Field label="Preferred date" htmlFor={id("date")} required error={errors.date?.message}>
+          <input
+            id={id("date")}
+            {...register("date")}
+            type="date"
+            min={new Date().toISOString().split("T")[0]}
+            aria-invalid={!!errors.date}
+            className="form-input"
           />
-        </div>
+        </Field>
+      </div>
+
+      {!compact && (
+        <>
+          <Field label="Preferred doctor" htmlFor={id("doctor")} optional>
+            <select id={id("doctor")} {...register("doctor")} className="form-input">
+              <option value="">Any available doctor</option>
+              {doctorOptions.map((d) => (
+                <option key={d.id} value={d.name}>
+                  {d.name} — {d.specialty}
+                </option>
+              ))}
+            </select>
+          </Field>
+
+          <Field label="Notes" htmlFor={id("message")} optional>
+            <textarea
+              id={id("message")}
+              {...register("message")}
+              placeholder="Briefly describe your concern…"
+              rows={3}
+              className="form-input"
+            />
+          </Field>
+        </>
       )}
 
-      {/* Submit button */}
-      <div className="pt-2">
-        <button
-          type="submit"
-          className="btn-whatsapp w-full justify-center py-3.5 text-base shadow-md hover:shadow-lg transition-all"
-        >
-          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.553 4.113 1.523 5.843L.057 23.486a.5.5 0 0 0 .613.614l5.74-1.466A11.957 11.957 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.82 9.82 0 0 1-5.022-1.38l-.36-.213-3.736.954.97-3.647-.233-.375A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z" />
-          </svg>
-          Book via WhatsApp
-        </button>
-      </div>
+      <button
+        type="submit"
+        className="btn-whatsapp btn-lg h-auto min-h-14 w-full whitespace-normal py-3 text-center"
+      >
+        <WhatsAppIcon className="w-5 h-5 shrink-0" />
+        Book via WhatsApp
+      </button>
     </form>
+  );
+}
+
+function Field({
+  label,
+  htmlFor,
+  required,
+  optional,
+  error,
+  children,
+}: {
+  label: string;
+  htmlFor: string;
+  required?: boolean;
+  optional?: boolean;
+  error?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="min-w-0">
+      <label htmlFor={htmlFor} className="form-label">
+        {label}
+        {required && <span className="text-red-500"> *</span>}
+        {optional && <span className="font-normal text-ink-400"> (optional)</span>}
+      </label>
+      {children}
+      {error && (
+        <p className="form-error" role="alert">
+          <AlertCircle size={13} />
+          {error}
+        </p>
+      )}
+    </div>
   );
 }

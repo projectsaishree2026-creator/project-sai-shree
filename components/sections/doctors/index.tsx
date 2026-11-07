@@ -1,188 +1,101 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { CalendarCheck, Clock, Languages, ArrowRight } from "lucide-react";
-import { VisitWebsiteButton } from "@/components/ui/visit-website-button";
-import { doctors } from "@/data/doctors";
-import { SectionHeader } from "@/components/shared/section-header";
-import { Stagger, StaggerItem } from "@/components/animations";
-import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { doctors, type Doctor } from "@/data/doctors";
 import { clinic } from "@/data/clinic";
-
-const SPECIALTY_COLORS: Record<string, string> = {
-  Endocrinology: "#0EA5E9",
-  Gynecology: "#EC4899",
-  "Gynecology & IVF": "#EC4899",
-  Neurology: "#6366F1",
-  Dental: "#10B981",
-  Pulmonology: "#06B6D4",
-  Oncology: "#8B5CF6",
-  Urology: "#3B82F6",
-  Gastroenterology: "#F59E0B",
-};
-
-const INITIALS_BG: Record<string, string> = {
-  Endocrinology: "#EFF6FF",
-  Gynecology: "#FDF2F8",
-  "Gynecology & IVF": "#FDF2F8",
-  Neurology: "#EEF2FF",
-  Dental: "#ECFDF5",
-  Pulmonology: "#ECFEFF",
-  Oncology: "#F5F3FF",
-  Urology: "#EFF6FF",
-  Gastroenterology: "#FFFBEB",
-};
+import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { SectionHeader } from "@/components/shared/section-header";
+import { DoctorSpotlight } from "@/components/sections/doctors/doctor-spotlight";
+import { VisitWebsiteButton } from "@/components/ui/visit-website-button";
 
 export function DoctorsSection() {
   return (
-    <section className="section-py">
-      <div className="section-container">
-        <div className="mb-12">
-          <SectionHeader
-            eyebrow="Our Doctors"
-            title="Meet Our"
-            titleHighlight="Expert Specialists"
-            subtitle="Qualified, experienced, and compassionate doctors dedicated to your health and well-being."
-          />
-        </div>
-
-        <Stagger className="flex flex-wrap justify-center gap-6">
-          {doctors.map((doc) => (
-            <StaggerItem key={doc.id} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex">
-              <div className="w-full">
-                <DoctorCard doctor={doc} />
-              </div>
-            </StaggerItem>
-          ))}
-        </Stagger>
-
-        <div className="mt-10 text-center">
-          <Link href="/doctors" className="btn-outline inline-flex">
-            View All Doctors
-            <ArrowRight size={16} />
-          </Link>
+    <section className="dark-scope frame section bg-ink-900">
+      <div className="container-x">
+        <SectionHeader
+          tone="dark"
+          index={3}
+          eyebrow="Specialists"
+          meta={`All ${doctors.length} doctors`}
+          title="Meet the doctors"
+          titleHighlight="behind your care."
+          action={
+            <Link href="/doctors" className="btn-ghost-light">
+              All doctors <ArrowRight size={15} />
+            </Link>
+          }
+        />
+        <div className="mt-14 md:mt-20">
+          <DoctorSpotlight />
         </div>
       </div>
     </section>
   );
 }
 
-export function DoctorCard({ doctor }: { doctor: (typeof doctors)[0] }) {
-  const [flipped, setFlipped] = useState(false);
-  const color = SPECIALTY_COLORS[doctor.specialty] || "#0EA5E9";
+export function DoctorCard({ doctor, showBio = false }: { doctor: Doctor; showBio?: boolean }) {
   const waUrl = getWhatsAppUrl(
     `Hello ${clinic.name}, I'd like to book an appointment with ${doctor.name} (${doctor.specialty}).`
   );
 
   return (
-    <div
-      className="group relative w-full h-[380px] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 [perspective:1000px]"
-      onClick={() => setFlipped((prev) => !prev)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          setFlipped((prev) => !prev);
-        }
-      }}
-      aria-label={`View details for ${doctor.name}`}
-    >
-      <div
-        className={`relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] ${
-          flipped ? "[transform:rotateY(180deg)]" : "md:group-hover:[transform:rotateY(180deg)]"
-        }`}
+    <article className="group card flex h-full flex-col overflow-hidden transition-colors hover:border-ink-900">
+      <Link
+        href={`/doctors/${doctor.slug}`}
+        className="relative block aspect-[4/5] overflow-hidden bg-surface-2"
+        aria-label={`View profile of ${doctor.name}`}
       >
-        {/* Front Side */}
-        <div className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden [backface-visibility:hidden]">
-          <Image
-            src={doctor.image}
-            alt={doctor.name}
-            fill
-            className="object-cover transition duration-500 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-          <div className="absolute bottom-0 p-4 text-white w-full">
-            <h3
-              className="font-display font-bold text-xl leading-tight mb-2"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              {doctor.name}
-            </h3>
-            <span
-              className="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full backdrop-blur-sm border border-white/20"
-              style={{ background: `${color}40`, color: "#fff" }}
-            >
-              {doctor.specialty}
-            </span>
+        <Image
+          src={doctor.image}
+          alt={`${doctor.name}, ${doctor.specialty} specialist at Sai Shree Polyclinic`}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
+        />
+        <span className="absolute left-0 top-0 bg-ink-900 px-3 py-2 label-mono text-[0.625rem] text-white">
+          {doctor.specialty}
+        </span>
+        <span className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white text-ink-900 opacity-0 transition-opacity group-hover:opacity-100">
+          <ArrowUpRight size={16} />
+        </span>
+      </Link>
+
+      <div className="flex flex-1 flex-col p-5 md:p-6">
+        <h3 className="font-display text-2xl font-semibold tracking-[-0.035em]">
+          <Link href={`/doctors/${doctor.slug}`} className="hover:text-brand-600 transition-colors">
+            {doctor.name}
+          </Link>
+        </h3>
+        <p className="mt-2 label-mono text-[0.6875rem] leading-relaxed text-ink-500">{doctor.qualification}</p>
+        {showBio && <p className="mt-4 text-[0.9375rem] leading-relaxed text-ink-600">{doctor.bio}</p>}
+
+        <dl className="mt-5 grid grid-cols-2 border-y border-line text-sm">
+          <div className="flex flex-col-reverse py-3">
+            <dt className="mt-1 label-mono text-[0.625rem] text-ink-400">Experience</dt>
+            <dd className="font-semibold text-ink-900">{doctor.experience}</dd>
           </div>
-        </div>
-
-        {/* Back Side */}
-        <div className="absolute inset-0 bg-white rounded-2xl p-5 flex flex-col justify-between h-full border border-gray-100 [backface-visibility:hidden] [transform:rotateY(180deg)]">
-          <div>
-            <div className="mb-4">
-              <h3
-                className="font-display font-bold text-lg text-gray-900 leading-tight mb-1"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                {doctor.name}
-              </h3>
-              <span
-                className="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full"
-                style={{ background: `${color}14`, color }}
-              >
-                {doctor.specialty}
-              </span>
-            </div>
-
-            <p className="text-sm text-gray-500 mb-4 leading-relaxed line-clamp-3">
-              {doctor.bio}
-            </p>
-
-            <div className="text-sm text-gray-600 space-y-2">
-              <p className="font-medium text-gray-800 leading-snug">
-                {doctor.qualification}
-              </p>
-              <div className="flex items-center gap-1.5">
-                <Clock size={14} className="text-primary" />
-                <span>{doctor.experience} Experience</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <CalendarCheck size={14} className="text-accent" />
-                <span>{doctor.available}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Languages size={14} className="text-gray-400" />
-                <span className="truncate">{doctor.languages.join(", ")}</span>
-              </div>
-            </div>
+          <div className="flex flex-col-reverse border-l border-line py-3 pl-4">
+            <dt className="mt-1 label-mono text-[0.625rem] text-ink-400">Available</dt>
+            <dd className="font-semibold text-ink-900">{doctor.available}</dd>
           </div>
+        </dl>
 
-          {/* Action buttons — Book Appointment + optional Visit Website */}
-          <div className="mt-auto flex flex-wrap gap-2">
-            <a
-              href={waUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()} // Prevent flip when clicking button
-              className="btn-primary flex-1 min-w-0 justify-center py-2.5 text-sm"
-              aria-label={`Book Appointment with ${doctor.name}`}
-            >
-              <CalendarCheck size={16} />
-              Book Appointment
-            </a>
-
-            <VisitWebsiteButton
-              url={doctor.website}
-              doctorName={doctor.name}
-            />
-          </div>
+        <div className="mt-auto flex flex-wrap gap-2 pt-5">
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary btn-sm min-w-[8.5rem] flex-1 px-3"
+            aria-label={`Book an appointment with ${doctor.name}`}
+          >
+            Book visit
+          </a>
+          <Link href={`/doctors/${doctor.slug}`} className="btn-secondary btn-sm min-w-[6rem] flex-1 px-3 sm:flex-none">
+            Profile
+          </Link>
+          <VisitWebsiteButton url={doctor.website} doctorName={doctor.name} compact />
         </div>
       </div>
-    </div>
+    </article>
   );
 }

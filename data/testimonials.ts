@@ -16,7 +16,7 @@ export const testimonials: Testimonial[] = [
     location: "Cuttack",
     rating: 5,
     review:
-      "Dr. Nanda is exceptional. She took time to explain everything about my pregnancy. The clinic is very clean and well-maintained. I feel safe here.",
+      "The doctor was exceptional and took time to explain everything about my pregnancy. The clinic is very clean and well-maintained. I feel safe here.",
     specialty: "Gynecology",
     initials: "SR",
     color: "#EC4899",

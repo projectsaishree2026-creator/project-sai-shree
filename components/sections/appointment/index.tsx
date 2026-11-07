@@ -1,135 +1,72 @@
-import { CalendarCheck, Phone, MessageCircle, Clock } from "lucide-react";
+import { Phone, Lock } from "lucide-react";
 import { AppointmentForm } from "@/components/forms/appointment-form";
-import { SectionHeader } from "@/components/shared/section-header";
-import { FadeUp } from "@/components/animations";
+import { SectionIndex } from "@/components/shared/section-index";
+import { OpenStatus } from "@/components/shared/open-status";
+import { WhatsAppIcon } from "@/components/shared/icons";
 import { clinic } from "@/data/clinic";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 
-const quickContacts = [
-  {
-    icon: Phone,
-    color: "#0EA5E9",
-    bg: "#EFF6FF",
-    label: "Call Us Directly",
-    value: clinic.phoneDisplay,
-    href: `tel:+91${clinic.phone}`,
-    cta: "Call Now",
-  },
-  {
-    icon: MessageCircle,
-    color: "#25D366",
-    bg: "#F0FDF4",
-    label: "WhatsApp Us",
-    value: clinic.phoneDisplay,
-    href: getWhatsAppUrl(),
-    cta: "Chat Now",
-    external: true,
-  },
-  {
-    icon: Clock,
-    color: "#F59E0B",
-    bg: "#FFFBEB",
-    label: "Clinic Hours",
-    value: "Mon – Sat: 9 AM – 7 PM",
-    href: "#",
-    cta: "",
-  },
+const steps = [
+  { title: "Share your details", desc: "Tell us the department and a date that suits you." },
+  { title: "We confirm on WhatsApp", desc: "Our front desk confirms your slot within 30 minutes." },
+  { title: "Visit the clinic", desc: "Come in at your time — minimal waiting, no surprises." },
 ];
 
 export function AppointmentSection() {
   return (
-    <section id="appointment" className="section-py bg-gradient-subtle">
-      <div className="section-container">
-        <FadeUp>
-          <div className="mb-12">
-            <SectionHeader
-              eyebrow="Book Appointment"
-              title="Schedule Your Visit"
-              titleHighlight="Today"
-              subtitle="Fill in the form below or reach us directly via WhatsApp. Our team will confirm your slot within 30 minutes."
-            />
-          </div>
-        </FadeUp>
+    <section id="appointment" className="frame section scroll-mt-16 bg-white">
+      <div className="container-x">
+        <SectionIndex index={6} label="Book a visit" meta={<OpenStatus tone="light" />} />
 
-        <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start">
-          {/* Form — wider column */}
-          <FadeUp className="lg:col-span-3">
-            <div className="glass-card p-6 md:p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <CalendarCheck size={20} className="text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-display font-bold text-lg text-gray-900" style={{ fontFamily: "var(--font-display)" }}>
-                    Book an Appointment
-                  </h3>
-                  <p className="text-xs text-gray-500">We&apos;ll confirm within 30 minutes</p>
-                </div>
-              </div>
-              <AppointmentForm />
-            </div>
-          </FadeUp>
+        <div className="mt-14 md:mt-20 grid grid-cols-1 gap-14 lg:grid-cols-[minmax(0,1fr)_1.1fr] lg:gap-20">
+          <div>
+            <h2 className="display-md">
+              Schedule your visit <span className="text-brand-500">today.</span>
+            </h2>
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-ink-500">
+              Fill in the form or reach us directly. Our team will confirm your slot within 30 minutes.
+            </p>
 
-          {/* Info column */}
-          <FadeUp delay={0.15} className="lg:col-span-2 flex flex-col gap-5">
-            {quickContacts.map((item) => (
-              <div
-                key={item.label}
-                className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm flex items-center gap-4"
-              >
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: item.bg }}
-                >
-                  <item.icon size={22} style={{ color: item.color }} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-gray-400 mb-0.5">{item.label}</p>
-                  <p className="font-semibold text-sm text-gray-900 truncate">{item.value}</p>
-                </div>
-                {item.cta && (
-                  <a
-                    href={item.href}
-                    {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                    className="text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
-                    style={{
-                      color: item.color,
-                      background: item.bg,
-                    }}
-                  >
-                    {item.cta}
-                  </a>
-                )}
-              </div>
-            ))}
+            <ol className="mt-12 border-t border-line">
+              {steps.map((s, i) => (
+                <li key={s.title} className="grid grid-cols-[3rem_minmax(0,1fr)] gap-4 border-b border-line py-6">
+                  <span className="label-mono pt-1 text-brand-600">{String(i + 1).padStart(2, "0")}</span>
+                  <span>
+                    <span className="block font-display text-xl font-semibold tracking-[-0.03em] text-ink-900">
+                      {s.title}
+                    </span>
+                    <span className="mt-1 block text-ink-500">{s.desc}</span>
+                  </span>
+                </li>
+              ))}
+            </ol>
 
-            {/* Trust note */}
-            <div className="bg-primary/5 border border-primary/10 rounded-2xl p-5">
-              <p className="text-sm font-semibold text-gray-800 mb-2">
-                🔒 Your data is safe with us
-              </p>
-              <p className="text-xs text-gray-500 leading-relaxed">
-                We never share your personal information. Your appointment details are kept strictly confidential.
-              </p>
-            </div>
-
-            <div className="bg-amber-50 border border-amber-100 rounded-2xl p-5">
-              <p className="text-sm font-semibold text-gray-800 mb-2">
-                ⚡ Instant WhatsApp Booking
-              </p>
-              <p className="text-xs text-gray-500 leading-relaxed mb-3">
-                Prefer quick booking? Send us a WhatsApp message and we&apos;ll set up your appointment instantly.
-              </p>
+            <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <a href={`tel:+91${clinic.phone}`} className="fx-phone btn-outline">
+                <Phone size={15} /> {clinic.phoneDisplay}
+              </a>
               <a
                 href={getWhatsAppUrl("Hi, I'd like to book an appointment at Sai Shree Polyclinic.")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-whatsapp text-xs py-2 px-4"
+                className="btn-whatsapp"
               >
-                Open WhatsApp
+                <WhatsAppIcon className="w-4 h-4" /> Instant booking
               </a>
             </div>
-          </FadeUp>
+          </div>
+
+          <div className="border border-line-strong bg-paper p-6 md:p-10">
+            <div className="mb-8 flex items-center justify-between label-mono text-[0.6875rem]">
+              <span className="text-ink-900">Appointment request</span>
+              <span className="text-ink-500">* required</span>
+            </div>
+            <AppointmentForm />
+            <p className="mt-6 flex items-start gap-2 text-sm leading-relaxed text-ink-500">
+              <Lock size={14} className="mt-0.5 shrink-0" />
+              Your details are kept strictly confidential and only used to arrange your appointment.
+            </p>
+          </div>
         </div>
       </div>
     </section>

@@ -1,28 +1,36 @@
 import Link from "next/link";
-import { Home, CalendarCheck } from "lucide-react";
+import { Home, CalendarCheck, ArrowRight } from "lucide-react";
+import { services } from "@/data/services";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center mesh-bg px-4">
-      <div className="text-center max-w-md">
-        <div className="text-8xl font-extrabold gradient-text mb-4" style={{ fontFamily: "var(--font-display)" }}>
-          404
-        </div>
-        <h1 className="font-display font-bold text-2xl text-gray-900 mb-3" style={{ fontFamily: "var(--font-display)" }}>
-          Page Not Found
-        </h1>
-        <p className="text-gray-500 text-sm mb-8 leading-relaxed">
+    <section className="relative overflow-hidden">
+      <div className="absolute inset-0 dot-grid opacity-50 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
+      <div className="container-x relative flex min-h-[70vh] flex-col items-center justify-center py-20 text-center">
+        <p className="font-display text-7xl md:text-8xl font-extrabold tracking-tight text-brand-100">404</p>
+        <h1 className="mt-2 text-3xl md:text-4xl font-bold">Page not found</h1>
+        <p className="mt-4 max-w-md text-ink-500">
           The page you&apos;re looking for doesn&apos;t exist or has been moved. Let&apos;s get you back on track.
         </p>
-        <div className="flex flex-wrap justify-center gap-3">
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link href="/" className="btn-primary">
-            <Home size={16} /> Go Home
+            <Home size={16} /> Go home
           </Link>
-          <Link href="/contact#appointment" className="btn-outline">
-            <CalendarCheck size={16} /> Book Appointment
+          <Link href="/contact#appointment" className="btn-secondary">
+            <CalendarCheck size={16} /> Book appointment
           </Link>
         </div>
+        <div className="mt-14 w-full max-w-2xl">
+          <p className="mb-4 text-sm font-medium text-ink-500">Or browse a department</p>
+          <div className="flex flex-wrap justify-center gap-2">
+            {services.map((s) => (
+              <Link key={s.id} href={`/services/${s.slug}`} className="chip hover:border-brand-200 hover:text-brand-700">
+                {s.name} <ArrowRight size={13} />
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

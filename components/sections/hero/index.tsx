@@ -1,309 +1,185 @@
-"use client";
-
-import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
-import {
-  Phone,
-  CalendarCheck,
-  Star,
-  MapPin,
-  Clock,
-  ShieldCheck,
-  ChevronRight,
-  Users,
-  Heart,
-} from "lucide-react";
+import { ArrowRight, Phone, Star } from "lucide-react";
 import { clinic } from "@/data/clinic";
-import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { doctors } from "@/data/doctors";
 import { services } from "@/data/services";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { WhatsAppIcon } from "@/components/shared/icons";
+import { ECGLine } from "@/components/shared/ecg-line";
+import { OpenStatus } from "@/components/shared/open-status";
+import { LanguageSwitch } from "@/components/shared/language-switch";
 
-const SPECIALTY_ICONS: Record<string, string> = {
-  endocrinology: "🩸",
-  neurology: "🧠",
-  pulmonology: "🫁",
-  gastroenterology: "🫀",
-  dental: "🦷",
-  gynecology: "🌸",
-  urology: "💧",
-  oncology: "🎗️",
-};
+const STATS = [
+  { value: clinic.stats.rating, unit: "/5", label: "Google rating" },
+  { value: clinic.stats.patients, label: "Patients treated" },
+  { value: String(services.length), label: "Specialist departments" },
+  { value: clinic.stats.experience, unit: " yrs", label: "Serving Cuttack" },
+];
 
 export function Hero() {
-  const whatsappUrl = getWhatsAppUrl(
-    `Hello ${clinic.name}, I'd like to book an appointment.`
-  );
+  /** Movement-only entrance (CSS) — text is visible in the server HTML from the first frame. */
+  const rise = (delay: number) => ({ style: { animationDelay: `${delay}s` } });
 
   return (
-    <section className="relative min-h-[100svh] flex items-center overflow-hidden pt-[72px]">
-      {/* Background */}
-      <div className="absolute inset-0 mesh-bg" />
-
-      {/* Decorative blobs */}
+    <section className="dark-scope frame relative overflow-hidden bg-ink-900 text-ink-300">
       <div
-        className="absolute top-20 right-0 w-[500px] h-[500px] rounded-full opacity-30 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%)",
-          filter: "blur(40px)",
-        }}
+        className="absolute inset-0 grid-lines [--grid-line:rgb(255_255_255/0.035)] [mask-image:radial-gradient(ellipse_at_top,black,transparent_75%)]"
+        aria-hidden="true"
       />
       <div
-        className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full opacity-20 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(6,182,212,0.18) 0%, transparent 70%)",
-          filter: "blur(40px)",
-        }}
+        className="absolute -top-48 right-[-10%] h-[36rem] w-[36rem] rounded-full bg-brand-500/25 blur-[140px]"
+        aria-hidden="true"
       />
 
-      <div className="section-container relative z-10 py-16 md:py-20 -mt-8 md:-mt-16">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left — copy */}
-          <div>
-            {/* Ultra-Slim Trust Pill */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center bg-white/80 backdrop-blur-md border border-white/60 shadow-sm shadow-primary/5 rounded-full p-1 pr-3 mb-6"
-            >
-              {/* Micro Avatars */}
-              <div className="flex -space-x-1.5 mr-2">
-                <div className="w-5 h-5 rounded-full border border-white bg-blue-50 flex items-center justify-center z-30">
-                  <Users size={9} className="text-blue-600" />
-                </div>
-                <div className="w-5 h-5 rounded-full border border-white bg-emerald-50 flex items-center justify-center z-20">
-                  <Heart size={9} className="text-emerald-500" />
-                </div>
-                <div className="w-5 h-5 rounded-full border border-white bg-amber-50 flex items-center justify-center z-10">
-                  <Star size={9} className="fill-amber-400 text-amber-400" />
-                </div>
-                <div className="w-5 h-5 rounded-full border border-white bg-gray-900 flex items-center justify-center z-0">
-                  <span className="text-[7px] font-bold text-white">+5k</span>
-                </div>
-              </div>
-
-              {/* Single Line Text */}
-              <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10px] text-gray-500">
-                <span className="font-bold text-gray-900">4.9 Rating</span>
-                <span className="w-0.5 h-0.5 rounded-full bg-gray-300" />
-                <span><strong className="text-gray-900 font-bold">5000+</strong> Treated</span>
-                <span className="w-0.5 h-0.5 rounded-full bg-gray-300" />
-                <span className="font-semibold text-primary">Trusted Clinic</span>
-              </div>
-            </motion.div>
-
-            {/* Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-display text-4xl sm:text-5xl md:text-[3.25rem] font-extrabold leading-[1.1] text-gray-900 mb-5"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Advanced{" "}
-              <span className="gradient-text">Multi-Specialty</span>
-              <br />
-              Care in Cuttack
-            </motion.h1>
-
-            {/* Subtext */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-base md:text-lg text-gray-500 leading-relaxed mb-8 max-w-lg"
-            >
-              8 specialties. Expert doctors. All under one roof.
-              From diabetes management to cancer screening — quality healthcare made accessible in Cuttack.
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-wrap gap-3 mb-8"
-            >
-              <Link href="/contact#appointment" className="btn-primary text-base px-6 py-3.5">
-                <CalendarCheck size={18} />
-                Book Appointment
-              </Link>
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-whatsapp text-base px-6 py-3.5"
-              >
-                <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] fill-current">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-                  <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.553 4.113 1.523 5.843L.057 23.486a.5.5 0 0 0 .613.614l5.74-1.466A11.957 11.957 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.82 9.82 0 0 1-5.022-1.38l-.36-.213-3.736.954.97-3.647-.233-.375A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z" />
-                </svg>
-                WhatsApp Now
-              </a>
-              <a
-                href={`tel:+91${clinic.phone}`}
-                className="w-[50px] h-[50px] flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-600 hover:border-primary hover:text-primary hover:bg-primary/5 hover:shadow-md transition-all shadow-sm shrink-0 group"
-                aria-label="Call Clinic"
-              >
-                <Phone size={20} className="group-hover:scale-110 transition-transform" />
-              </a>
-            </motion.div>
-
-            {/* Meta info */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.45 }}
-              className="flex flex-wrap gap-x-6 gap-y-2"
-            >
-              <span className="flex items-center gap-1.5 text-sm text-gray-500">
-                <MapPin size={14} className="text-primary shrink-0" />
-                {clinic.address}
-              </span>
-              <span className="flex items-center gap-1.5 text-sm text-gray-500">
-                <Clock size={14} className="text-primary" />
-                Mon–Sat: 9 AM – 7 PM
-              </span>
-              <span className="flex items-center gap-1.5 text-sm text-gray-500">
-                <ShieldCheck size={14} className="text-accent" />
-                NABH Guidelines Followed
-              </span>
-            </motion.div>
-          </div>
-
-          {/* Right — visual */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="relative hidden lg:block"
-          >
-            {/* Main card */}
-            <div className="relative">
-              {/* Hero visual card */}
-              <div
-                className="relative rounded-3xl overflow-hidden shadow-2xl"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #ecfdf5 100%)",
-                  minHeight: 460,
-                }}
-              >
-                {/* Large decorative cross */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-5">
-                  <svg viewBox="0 0 200 200" className="w-64 h-64">
-                    <rect x="80" y="10" width="40" height="180" rx="20" fill="#0EA5E9" />
-                    <rect x="10" y="80" width="180" height="40" rx="20" fill="#0EA5E9" />
-                  </svg>
-                </div>
-
-                {/* Clinic info card */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
-                  <div
-                    className="w-20 h-20 rounded-2xl flex items-center justify-center mb-5 shadow-lg"
-                    style={{
-                      background: "linear-gradient(135deg, #0EA5E9, #06B6D4)",
-                    }}
-                  >
-                    <svg viewBox="0 0 200 200" className="w-10 h-10">
-                      <rect x="80" y="10" width="40" height="180" rx="12" fill="white" />
-                      <rect x="10" y="80" width="180" height="40" rx="12" fill="white" />
-                    </svg>
-                  </div>
-                  <h3
-                    className="font-extrabold text-2xl text-gray-900 mb-1"
-                    style={{ fontFamily: "var(--font-display)" }}
-                  >
-                    Sai Shree Polyclinic
-                  </h3>
-                  <p className="text-sm text-gray-500 mb-6">
-                    Cuttack&apos;s Trusted Multi-Specialty Care
-                  </p>
-
-                  {/* Specialty chips */}
-                  <div className="flex flex-wrap gap-2 justify-center">
-                    {services.slice(0, 6).map((s) => (
-                      <span
-                        key={s.id}
-                        className="inline-flex items-center gap-1.5 bg-white/80 backdrop-blur-sm border border-white/60 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 shadow-sm"
-                      >
-                        <span>{SPECIALTY_ICONS[s.slug] || "🏥"}</span>
-                        {s.name}
-                      </span>
-                    ))}
-                    <span className="inline-flex items-center gap-1 bg-primary/10 border border-primary/20 rounded-full px-3 py-1 text-xs font-semibold text-primary">
-                      +2 more
-                      <ChevronRight size={10} />
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating stat cards */}
-              <motion.div
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-4 -left-6 glass-card px-4 py-3 flex items-center gap-3 shadow-lg"
-              >
-                <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
-                  <Star size={18} className="fill-amber-400 text-amber-400" />
-                </div>
-                <div>
-                  <p className="font-bold text-gray-900 text-lg leading-none">4.9 ★</p>
-                  <p className="text-xs text-gray-500 mt-0.5">Google Rating</p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                animate={{ y: [0, 6, 0] }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="absolute -bottom-4 -right-4 glass-card px-4 py-3 flex items-center gap-3 shadow-lg"
-              >
-                <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
-                  <ShieldCheck size={18} className="text-accent" />
-                </div>
-                <div>
-                  <p className="font-bold text-gray-900 text-lg leading-none">5000+</p>
-                  <p className="text-xs text-gray-500 mt-0.5">Patients Served</p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                animate={{ y: [0, -5, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute top-1/2 -right-8 -translate-y-1/2 glass-card px-4 py-3 flex items-center gap-3 shadow-lg"
-              >
-                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-                  <span className="text-xl">🏥</span>
-                </div>
-                <div>
-                  <p className="font-bold text-gray-900 text-lg leading-none">8+</p>
-                  <p className="text-xs text-gray-500 mt-0.5">Specialties</p>
-                </div>
-              </motion.div>
+      {/* First screen — fills the viewport below the 5rem navbar; type scales with height so nothing is cut off */}
+      <div className="relative flex min-h-[calc(100svh-5rem)] flex-col">
+        <div className="container-x pt-5 md:pt-8">
+          <div className="flex flex-wrap items-center justify-between gap-4 label-mono">
+            {/* Location is already in the subtitle — mobile keeps only status + language */}
+            <p className="hidden md:flex items-center gap-2 text-brand-300">
+              <span className="h-[7px] w-[7px] bg-brand-400" aria-hidden="true" />
+              Mangalabag · Cuttack, Odisha
+            </p>
+            <div className="flex w-full flex-wrap items-center justify-between gap-3 md:w-auto md:flex-wrap md:justify-start md:gap-4">
+              <OpenStatus className="max-md:rounded-full max-md:border max-md:border-white/10 max-md:bg-white/[0.04] max-md:px-3 max-md:py-[0.4375rem] max-md:text-[0.6875rem]" />
+              <LanguageSwitch
+                href="/or"
+                to="or"
+                tone="dark"
+                className="normal-case tracking-normal font-sans max-md:border-white/10 max-md:bg-white/[0.04] max-md:px-3 max-md:text-[0.8125rem]"
+              />
             </div>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Mobile floating CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="lg:hidden mt-8 grid grid-cols-3 gap-2 p-4 glass-card"
-        >
-          {[
-            { icon: "⭐", label: "4.9 Rating" },
-            { icon: "🏥", label: "8+ Specialties" },
-            { icon: "👨‍⚕️", label: "5000+ Patients" },
-          ].map((item) => (
-            <div key={item.label} className="flex flex-col items-center gap-1 py-2">
-              <span className="text-xl">{item.icon}</span>
-              <span className="text-xs font-semibold text-gray-700">{item.label}</span>
+        <div className="container-x flex flex-1 flex-col justify-center py-7 md:py-8">
+          <h1 {...rise(0.05)} className="rise text-white">
+            <span className="mb-5 block font-display text-[0.8125rem] md:mb-5 md:text-2xl font-medium tracking-[-0.02em] text-brand-300 max-md:flex max-md:w-fit max-md:items-center max-md:gap-2 max-md:rounded-full max-md:border max-md:border-brand-400/25 max-md:bg-brand-500/10 max-md:px-3.5 max-md:py-1.5 max-md:tracking-normal">
+              <span className="h-1.5 w-1.5 rounded-full bg-brand-400 md:hidden" aria-hidden="true" />
+              Multispecialty polyclinic in Cuttack
+            </span>{" "}
+            <span className="display-xl block text-[clamp(2.5rem,13vw,4.5rem)] md:text-[clamp(2.75rem,min(8.5vw,15svh),7.75rem)]">
+              Specialist care,
+              <br />
+              <span className="text-brand-400">close to home.</span>
+            </span>
+          </h1>
+
+          <p
+            {...rise(0.18)}
+            className="rise mt-5 md:mt-7 max-w-4xl font-display text-[1.1875rem] leading-[1.4] tracking-[-0.02em] md:text-[clamp(1.375rem,min(3vw,4.8svh),2.75rem)] font-medium md:leading-[1.12] md:tracking-[-0.035em] text-ink-400"
+          >
+            {services.length} departments. {doctors.length} specialists. One roof in Mangalabag, Cuttack.
+            <span className="ml-1 inline-block h-[0.85em] w-[3px] translate-y-[0.1em] bg-brand-400 animate-blink" aria-hidden="true" />
+          </p>
+
+          {/* Mobile only — trust card and actions inside the first screen (desktop shows these below the fold) */}
+          <div {...rise(0.3)} className="rise mt-7 md:hidden">
+            <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-3.5 backdrop-blur-sm">
+              <div className="flex -space-x-2.5 shrink-0">
+                {doctors.slice(0, 3).map((d) => (
+                  <span
+                    key={d.id}
+                    className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-ink-900 bg-ink-800"
+                  >
+                    <Image src={d.image} alt="" fill sizes="40px" className="object-cover object-top" />
+                  </span>
+                ))}
+                <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-ink-900 bg-brand-500 font-mono text-[0.6875rem] font-semibold text-white">
+                  +{doctors.length - 3}
+                </span>
+              </div>
+              <div className="min-w-0">
+                <p className="flex items-center gap-1.5 text-sm font-semibold text-white">
+                  <Star size={14} className="fill-amber-400 text-amber-400" aria-hidden="true" />
+                  {clinic.stats.rating} on Google
+                </p>
+                <p className="mt-0.5 text-[0.8125rem] leading-snug text-ink-400">MD, MS, DM &amp; MCh specialists</p>
+              </div>
+            </div>
+
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <Link href="/contact#appointment" className="btn-primary btn-lg col-span-2 w-full">
+                Book appointment <ArrowRight size={16} />
+              </Link>
+              <a
+                href={getWhatsAppUrl(`Hello ${clinic.name}, I'd like to book an appointment.`)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-ghost-light h-12 w-full px-3"
+              >
+                <WhatsAppIcon className="w-4 h-4 text-pulse" /> WhatsApp
+              </a>
+              <a href={`tel:${clinic.phoneE164}`} className="btn-ghost-light h-12 w-full px-3">
+                <Phone size={15} aria-hidden="true" /> Call
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Heartbeat */}
+        <div className="relative h-14 shrink-0 text-brand-400 md:h-[clamp(3.5rem,9svh,8rem)]" aria-hidden="true">
+          <ECGLine />
+        </div>
+      </div>
+
+      <div className="container-x relative">
+        <div className="grid grid-cols-1 gap-10 border-t border-white/10 py-10 md:py-14 lg:grid-cols-[1.2fr_minmax(0,1fr)] lg:items-center">
+          <div {...rise(0.3)} className="rise flex flex-col gap-6 sm:flex-row sm:items-center">
+            <div className="max-md:hidden flex -space-x-3 shrink-0">
+              {doctors.slice(0, 5).map((d) => (
+                <span
+                  key={d.id}
+                  className="relative h-12 w-12 overflow-hidden rounded-full border-2 border-ink-900 bg-ink-800"
+                >
+                  <Image src={d.image} alt="" fill sizes="48px" className="object-cover object-top" />
+                </span>
+              ))}
+              <span className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-ink-900 bg-brand-500 font-mono text-xs font-semibold text-white">
+                +{doctors.length - 5}
+              </span>
+            </div>
+            <p className="max-w-xl text-lg leading-relaxed">
+              MD, MS, DM and MCh qualified doctors, in-house diagnostics and a pharmacy — so you can see the
+              right specialist without travelling across the city.
+            </p>
+          </div>
+
+          <div {...rise(0.38)} className="rise max-md:hidden flex flex-wrap gap-3 lg:justify-end">
+            <Link href="/contact#appointment" className="btn-primary btn-lg">
+              Book appointment <ArrowRight size={16} />
+            </Link>
+            <a
+              href={getWhatsAppUrl(`Hello ${clinic.name}, I'd like to book an appointment.`)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ghost-light btn-lg"
+            >
+              <WhatsAppIcon className="w-4 h-4 text-pulse" /> WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <dl className="grid grid-cols-2 border-t border-white/10 lg:grid-cols-4">
+          {STATS.map((s, i) => (
+            <div
+              key={s.label}
+              className={[
+                "flex flex-col-reverse py-8 md:py-10 pr-4",
+                i % 2 === 1 ? "border-l border-white/10 pl-6" : "",
+                i >= 2 ? "border-t border-white/10 lg:border-t-0" : "",
+                i === 2 ? "lg:border-l lg:pl-6" : "",
+              ].join(" ")}
+            >
+              <dt className="mt-3 label-mono text-[0.6875rem] text-ink-400">{s.label}</dt>
+              <dd className="font-display text-4xl md:text-5xl font-semibold tracking-[-0.05em] text-white">
+                {s.value}
+                {s.unit && <span className="text-ink-500">{s.unit}</span>}
+              </dd>
             </div>
           ))}
-        </motion.div>
+        </dl>
       </div>
     </section>
   );

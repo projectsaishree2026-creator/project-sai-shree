@@ -1,114 +1,80 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { Inter_Tight, JetBrains_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { WhatsAppButton } from "@/components/shared/whatsapp-button";
-import { StickyMobileCTA } from "@/components/shared/sticky-mobile-cta";
-import { CallButton } from "@/components/shared/call-button";
+import { FloatingContact } from "@/components/shared/floating-contact";
 import { clinic } from "@/data/clinic";
+import { siteConfig } from "@/config/site";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { JsonLd } from "@/components/shared/json-ld";
+import { ClickTracking } from "@/components/analytics/click-tracking";
+import { GA_MEASUREMENT_ID } from "@/lib/analytics";
+import { siteGraph } from "@/lib/schema";
+
+const interTight = Inter_Tight({ subsets: ["latin"], variable: "--font-inter-tight", display: "swap" });
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-jetbrains",
+  display: "swap",
+});
+const instrument = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-instrument",
+  display: "swap",
+});
+
+export const viewport: Viewport = {
+  themeColor: "#0a1622",
+};
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${clinic.name} | Advanced Multi-Specialty Care in Cuttack`,
+    default: "Multispecialty Polyclinic in Cuttack | Sai Shree Polyclinic",
     template: `%s | ${clinic.name}`,
   },
   description: clinic.description,
-  keywords: [
-    "best polyclinic in Cuttack",
-    "multi-specialty clinic Cuttack",
-    "Sai Shree Polyclinic",
-    "best doctors Cuttack Odisha",
-    "diabetes doctor Cuttack",
-    "neurology clinic Cuttack",
-    "dental clinic Cuttack",
-    "gynecologist Cuttack",
-    "clinic near me Cuttack",
-    "multi-specialty clinic near me",
-  ],
-  metadataBase: new URL("https://saishreepolyclinic.com"),
+  applicationName: clinic.name,
   openGraph: {
     type: "website",
-    locale: "en_IN",
-    url: "https://saishreepolyclinic.com",
-    title: clinic.name,
-    description: clinic.description,
+    locale: siteConfig.locale,
     siteName: clinic.name,
+    images: [{ url: siteConfig.ogImage, width: 1200, height: 630, alt: clinic.name }],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: clinic.name,
-    description: clinic.description,
-  },
+  twitter: { card: "summary_large_image", images: [siteConfig.ogImage] },
   robots: { index: true, follow: true },
+  verification: { google: "hnX54HYUQ7M53VbL8Nycoi2LcVT1OWf34-cXMg43jS8" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning className={`${interTight.variable} ${jetbrains.variable} ${instrument.variable}`}>
       <head>
-        <meta name="google-site-verification" content="hnX54HYUQ7M53VbL8Nycoi2LcVT1OWf34-cXMg43jS8" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&display=swap"
-          rel="stylesheet"
-        />
-        {/* Favicon — all derived from logo.png */}
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
-        <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "MedicalBusiness",
-              name: clinic.name,
-              description: clinic.description,
-              address: {
-                "@type": "PostalAddress",
-                streetAddress: "Kathagola Rd, near shreema Hospital, Mangalabag",
-                addressLocality: "Cuttack",
-                addressRegion: "Odisha",
-                postalCode: clinic.pincode,
-                addressCountry: "IN",
-              },
-              telephone: clinic.phoneDisplay,
-              openingHours: "Mo-Sa 09:00-19:00",
-              url: "https://saishreepolyclinic.com",
-              hasMap: clinic.mapEmbedUrl,
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: "4.9",
-                reviewCount: "500",
-                bestRating: "5",
-              },
-              medicalSpecialty: [
-                "Endocrinology",
-                "Neurology",
-                "Pulmonology",
-                "Gastroenterology",
-                "Dentistry",
-                "Gynecology",
-                "Urology",
-                "Oncology",
-              ],
-            }),
-          }}
-        />
+        {/* Enables scroll-reveal styles only when JS runs; crawlers and no-JS visitors see all content */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        {/* Favicons come from app/favicon.ico, app/icon.png, app/apple-icon.png and app/manifest.ts */}
+        <JsonLd data={siteGraph()} />
       </head>
-      <body style={{ fontFamily: "'DM Sans', sans-serif" }}>
+      <body className="min-h-screen flex flex-col">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-lg focus:bg-brand-600 focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-white"
+        >
+          Skip to content
+        </a>
         <Navbar />
-        <main>{children}</main>
+        <main id="main" className="flex-1">
+          {children}
+        </main>
         <Footer />
-        {/* Conversion floaters */}
-        <WhatsAppButton />
-        <CallButton />
-        <StickyMobileCTA />
+        <FloatingContact />
+        {GA_MEASUREMENT_ID && <ClickTracking />}
       </body>
+      {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
     </html>
   );
 }

@@ -1,96 +1,70 @@
 "use client";
 
-import { motion, useInView, type Variants } from "framer-motion";
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+
+/**
+ * Scroll reveals that never hide content from crawlers or no-JS visitors.
+ * Elements are only hidden under `html.js` (set by an inline head script before
+ * first paint), so the server HTML always contains visible text.
+ */
+function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) {
+      const raf = requestAnimationFrame(() => setVisible(true));
+      return () => cancelAnimationFrame(raf);
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setVisible(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -80px 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return { ref, visible };
+}
 
 /* ── FadeUp ── */
 interface FadeUpProps {
   children: ReactNode;
   delay?: number;
-  duration?: number;
   className?: string;
-  once?: boolean;
 }
 
-export function FadeUp({ children, delay = 0, duration = 0.5, className, once = true }: FadeUpProps) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once, margin: "-60px" });
-
+export function FadeUp({ children, delay = 0, className }: FadeUpProps) {
+  const { ref, visible } = useReveal<HTMLDivElement>();
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0, y: 28 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
+      className={cn("reveal", visible && "is-visible", className)}
+      style={delay ? { transitionDelay: `${delay}s` } : undefined}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
-/* ── Stagger container ── */
-const staggerContainer: Variants = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.1, delayChildren: 0.05 },
-  },
-};
-
-const staggerItem: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-};
-
-interface StaggerProps {
-  children: ReactNode;
-  className?: string;
-  once?: boolean;
-}
-
-export function Stagger({ children, className, once = true }: StaggerProps) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once, margin: "-60px" });
-
+/* ── Stagger container: children reveal one after another ── */
+export function Stagger({ children, className }: { children: ReactNode; className?: string }) {
+  const { ref, visible } = useReveal<HTMLDivElement>();
   return (
-    <motion.div
-      ref={ref}
-      variants={staggerContainer}
-      initial="hidden"
-      animate={inView ? "show" : "hidden"}
-      className={cn(className)}
-    >
+    <div ref={ref} className={cn("reveal-group", visible && "is-visible", className)}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
 export function StaggerItem({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    <motion.div variants={staggerItem} className={cn(className)}>
-      {children}
-    </motion.div>
-  );
-}
-
-/* ── HoverScale ── */
-export function HoverScale({
-  children,
-  scale = 1.03,
-  className,
-}: {
-  children: ReactNode;
-  scale?: number;
-  className?: string;
-}) {
-  return (
-    <motion.div
-      whileHover={{ scale, y: -4 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className={cn(className)}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className={className}>{children}</div>;
 }

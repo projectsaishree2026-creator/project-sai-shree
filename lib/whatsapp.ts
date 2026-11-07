@@ -1,14 +1,16 @@
 import { clinic } from "@/data/clinic";
+import { services } from "@/data/services";
 import type { AppointmentInput } from "@/lib/validations";
 
 export function buildAppointmentWhatsAppMessage(data: AppointmentInput) {
+  const department = services.find((s) => s.slug === data.department)?.name ?? data.department;
   return `Hello ${clinic.name},
 
 I would like to book an appointment.
 
 *Name:* ${data.name}
 *Phone:* ${data.phone}
-*Department:* ${data.department}
+*Department:* ${department}
 *Doctor:* ${data.doctor || "Any available"}
 *Preferred Date:* ${data.date}
 ${data.message ? `*Note:* ${data.message}` : ""}
