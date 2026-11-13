@@ -16,5 +16,8 @@ export const navigation = {
     { label: "Gynecology", href: "/services/gynecology" },
     { label: "Urology", href: "/services/urology" },
     { label: "Oncology", href: "/services/oncology" },
+    { label: "Hematology", href: "/services/hematology" },
+    { label: "Orthopaedics", href: "/services/orthopedics" },
+    { label: "Neurosurgery", href: "/services/neurosurgery" },
   ],
 };

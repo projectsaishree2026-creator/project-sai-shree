@@ -25,6 +25,9 @@ export const SPECIALTY_ENUM: Record<string, string[]> = {
   gynecology: ["https://schema.org/Gynecologic", "https://schema.org/Obstetric"],
   urology: ["https://schema.org/Urologic"],
   oncology: ["https://schema.org/Oncologic"],
+  hematology: ["https://schema.org/Hematologic"],
+  orthopedics: ["https://schema.org/Musculoskeletal"],
+  neurosurgery: ["https://schema.org/Neurologic"],
 };
 
 const postalAddress = {
@@ -200,7 +203,7 @@ export function physician(d: Doctor) {
     image: absoluteUrl(d.image),
     description: d.bio,
     medicalSpecialty: SPECIALTY_ENUM[d.specialtySlug],
-    knowsLanguage: d.languages,
+    ...(d.languages.length ? { knowsLanguage: d.languages } : {}),
     address: postalAddress,
     telephone: clinic.phoneE164,
     isAcceptingNewPatients: true,

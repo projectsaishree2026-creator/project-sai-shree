@@ -112,13 +112,17 @@ export function DoctorSpotlight() {
             </p>
             <p className="text-right label-mono text-[0.6875rem] text-ink-400">
               {doc.specialty}
-              <br />
-              {doc.experience}
+              {doc.experience && (
+                <>
+                  <br />
+                  {doc.experience}
+                </>
+              )}
             </p>
           </div>
 
           <div className="mt-auto pt-12">
-            <p className="label-mono text-brand-300">{doc.qualification}</p>
+            <p className="label-mono text-brand-300">{doc.qualification ?? doc.role}</p>
             <h3 className="mt-4 font-display text-3xl md:text-[2.75rem] font-semibold leading-[1.02] tracking-[-0.045em] text-white">
               {doc.name}
             </h3>
@@ -130,7 +134,16 @@ export function DoctorSpotlight() {
               { label: "Experience", value: doc.experience },
               { label: "Available", value: doc.available },
               { label: "Languages", value: doc.languages.join(", ") },
-            ].map((f, i) => (
+            ]
+              // Fill unconfirmed fields with facts we do know, so the 3-column row never has a gap
+              .map((f) =>
+                f.value
+                  ? f
+                  : f.label === "Experience"
+                    ? { label: "Specialty", value: doc.specialty }
+                    : { label: "Clinic hours", value: clinic.hours }
+              )
+              .map((f, i) => (
               <div key={f.label} className={cn("flex flex-col-reverse py-5", i > 0 && "border-l border-white/10 pl-4 md:pl-6")}>
                 <dt className="mt-2 label-mono text-[0.625rem] text-ink-400">{f.label}</dt>
                 <dd className="font-display text-base md:text-xl font-semibold leading-snug tracking-[-0.03em] text-white">

@@ -7,6 +7,9 @@ import {
   Heart,
   Droplets,
   Shield,
+  Droplet,
+  Bone,
+  BrainCircuit,
   type LucideIcon,
 } from "lucide-react";
 
@@ -19,6 +22,9 @@ const ICONS: Record<string, LucideIcon> = {
   Heart,
   Droplets,
   Shield,
+  Droplet,
+  Bone,
+  BrainCircuit,
 };
 
 export function getServiceIcon(name: string): LucideIcon {

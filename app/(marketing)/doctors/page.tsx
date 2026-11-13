@@ -13,7 +13,7 @@ import { DoctorDirectory } from "@/components/sections/doctors/doctor-directory"
 const META = {
   title: "Specialist Doctors in Cuttack | Sai Shree Polyclinic",
   description:
-    "Meet 9 specialist doctors at Sai Shree Polyclinic, Cuttack: MD, MS, DM and MCh qualified across 8 departments. View profiles, OPD days and book a visit.",
+    "Meet 11 specialist doctors at Sai Shree Polyclinic, Cuttack: MD, MS, DM, MCh and DrNB qualified across 11 departments. View profiles and book a visit.",
   path: "/doctors",
 };
 
@@ -71,11 +71,11 @@ export default function DoctorsPage() {
               </h2>
               <p className="mt-8 text-lg leading-relaxed text-ink-600">
                 At <strong className="text-ink-900">Sai Shree Polyclinic, Cuttack</strong>, our medical team
-                is made up of specialists with between 8 and 16 years of experience in their fields. Each one is committed to accurate diagnosis,
+                is made up of experienced specialists, including faculty from SCB Medical College &amp; Hospital, Cuttack. Each one is committed to accurate diagnosis,
                 personalised treatment plans, and compassionate follow-up care. From{" "}
                 <strong className="text-ink-900">MD Endocrinologists</strong> managing diabetes and thyroid
                 disorders to <strong className="text-ink-900">MCh Urologists</strong> performing minimally
-                invasive procedures, our 8-specialty team covers a comprehensive range of medical needs — all
+                invasive procedures, our 11-specialty team covers a comprehensive range of medical needs — all
                 under one roof in the heart of Cuttack, Odisha.
               </p>
               <p className="mt-6 label-mono text-[0.6875rem] leading-relaxed text-ink-500">

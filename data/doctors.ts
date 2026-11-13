@@ -2,7 +2,8 @@ export interface Doctor {
   id: string;
   slug: string;
   name: string;
-  qualification: string;
+  /** Degrees as printed by the doctor. Omit until confirmed — never guess. */
+  qualification?: string;
   /** Role noun used in titles and schema, e.g. "Neurologist" */
   role: string;
   /** <title>, ≤ 60 characters */
@@ -11,9 +12,11 @@ export interface Doctor {
   metaDescription: string;
   specialty: string;
   specialtySlug: string;
-  experience: string;
+  /** e.g. "12 Years". Omit until confirmed — the UI hides it. */
+  experience?: string;
   bio: string;
   available: string;
+  /** Consultation languages. Leave empty until confirmed — the UI hides it. */
   languages: string[];
   image: string;
   /** Optional personal/profile website. If absent the "Visit Website" button is hidden. */
@@ -40,21 +43,21 @@ export const doctors: Doctor[] = [
     website: "https://www.drsandeepkumarsahu.com/",
   },
   {
-    id: "dr-pratha-apramita",
-    slug: "dr-pratha-apramita",
-    name: "Dr. Pratha Apramita",
-    qualification: "MBBS, MS (Gynecology & Obstetrics)",
-    role: "Gynaecologist",
-    seoTitle: "Dr. Pratha Apramita, Gynaecologist in Cuttack",
+    id: "dr-deepa-sethi",
+    slug: "dr-deepa-sethi",
+    name: "Dr. Deepa Sethi",
+    role: "Gynaecologist & Obstetrician",
+    seoTitle: "Dr. Deepa Sethi, Gynaecologist in Cuttack | Sai Shree",
     metaDescription:
-      "Dr. Pratha Apramita (MS Obstetrics & Gynaecology) offers pregnancy, PCOS and women's health care at Sai Shree Polyclinic, Cuttack. Tue, Thu & Sat. Book now.",
+      "Dr. Deepa Sethi, Asst. Professor of O&G at SCB Medical College, offers pregnancy, PCOS and fertility care at Sai Shree Polyclinic, Mangalabag, Cuttack. Book.",
     specialty: "Gynecology",
     specialtySlug: "gynecology",
-    experience: "9 Years",
-    bio: "Dr. Apramita is a compassionate gynecologist dedicated to women's health at every stage of life, from adolescence to menopause.",
-    available: "Tue, Thu, Sat",
-    languages: ["Odia", "Hindi"],
-    image: "/images/doctors/dr-pratha-apramita.webp",
+    bio: "Dr. Sethi is an Obstetrician & Gynaecologist and Assistant Professor in the Department of O&G at SCB Medical College & Hospital, Cuttack, and a former Senior Resident at AIIMS. She sees women for pregnancy and high-risk pregnancy care, PCOS, fertility concerns, period problems and menopause.",
+    available: "By appointment",
+    languages: [],
+    image: "/images/doctors/dr-deepa-sethi.webp",
+    // TODO: temporary preview URL — replace with the doctor's real domain
+    website: "https://drdeepasethi.vercel.app/",
   },
   {
     id: "dr-manasi-Das",
@@ -163,21 +166,57 @@ export const doctors: Doctor[] = [
     image: "/images/doctors/dr-soumya-ranjan-behera.webp",
   },
   {
-    id: "dr-niramaya-madhual",
-    slug: "dr-niramaya-madhual",
-    name: "Dr. Niramaya Madhual",
-    qualification: "MBBS, MS (O&G)",
-    role: "Gynaecologist & IVF Specialist",
-    seoTitle: "Dr. Niramaya Madhual, Gynaecologist & IVF in Cuttack",
+    id: "dr-mitanjali-behera",
+    slug: "dr-mitanjali-behera",
+    name: "Dr. Mitanjali Behera",
+    qualification: "MBBS, MD (Medicine), DrNB (Clinical Hematology)",
+    role: "Hematologist",
+    seoTitle: "Dr. Mitanjali Behera, Hematologist in Cuttack",
     metaDescription:
-      "Dr. Niramaya Madhual (MS O&G), laparoscopic surgeon with a fellowship in reproductive medicine, sees patients at Sai Shree Polyclinic, Cuttack. Book now.",
-    specialty: "Gynecology & IVF",
-    specialtySlug: "gynecology",
-    experience: "10+ Years",
-    bio: "Dr. Madhual is a highly skilled Cosmetic Gynecologist and Laparoscopic Surgeon. She is a Fellowship trained specialist in Reproductive Medicine, and serves as an IVF Head and Asst Prof (O&G).",
-    available: "Everyday",
-    languages: ["Odia", "Hindi", "English"],
-    image: "/images/doctors/niramaya-madhual.webp",
+      "Dr. Mitanjali Behera (MD, DrNB Clinical Hematology) treats anaemia, thalassemia, sickle cell, bleeding disorders and blood cancers at Sai Shree, Cuttack.",
+    specialty: "Hematology",
+    specialtySlug: "hematology",
+    bio: "Dr. Behera is a Consultant Hematologist at SCB Medical College & Hospital, Cuttack, with an MD in Medicine and a DrNB in Clinical Hematology. She sees adults with anaemia, thalassemia, sickle cell disease, bleeding and clotting problems, abnormal blood counts and blood cancers.",
+    available: "By appointment",
+    languages: [],
+    image: "/images/doctors/dr-mitanjali-behera.webp",
+    // TODO: temporary preview URL — replace with the doctor's real domain
+    website: "https://drmitanjalibehera.vercel.app/",
+  },
+  {
+    id: "dr-jitendra-sarangi",
+    slug: "dr-jitendra-sarangi",
+    name: "Dr. Jitendra Sarangi",
+    qualification: "MS (Orthopedics), DNB, MNAMS, FIOA (Arthroscopy & Arthroplasty)",
+    role: "Orthopaedic Surgeon",
+    seoTitle: "Dr. Jitendra Sarangi, Orthopaedic Surgeon in Cuttack",
+    metaDescription:
+      "Dr. Jitendra Sarangi (MS Ortho, DNB, FIOA) treats knee and joint pain, arthritis, sports injuries, fractures and back pain at Sai Shree Polyclinic, Cuttack.",
+    specialty: "Orthopaedics",
+    specialtySlug: "orthopedics",
+    bio: "Dr. Sarangi is an orthopaedic surgeon trained at SCB Medical College, Cuttack, a former Senior Resident in Orthopaedics at SCB MCH and a former Lecturer at SVNIRTAR, Olatpur. He treats joint pain and arthritis, sports and ligament injuries, fractures and back and neck pain, with fellowship training in arthroscopy and joint replacement.",
+    available: "Mon–Sat",
+    languages: [],
+    image: "/images/doctors/dr-jitendra-sarangi.webp",
+    // TODO: temporary preview URL — replace with the doctor's real domain
+    website: "https://dr-jitendra-sarangi-ruddy.vercel.app/",
+  },
+  {
+    id: "dr-alok-kumar-sahu",
+    slug: "dr-alok-kumar-sahu",
+    name: "Dr. Alok Kumar Sahu",
+    role: "Neurosurgeon",
+    seoTitle: "Dr. Alok Kumar Sahu, Neurosurgeon in Cuttack | Sai Shree",
+    metaDescription:
+      "Dr. Alok Kumar Sahu, neurosurgeon, sees patients with slipped disc, spine problems, head injury, brain tumours and nerve pain at Sai Shree, Mangalabag, Cuttack.",
+    specialty: "Neurosurgery",
+    specialtySlug: "neurosurgery",
+    bio: "Dr. Sahu is a neurosurgeon who sees patients with brain, spine and nerve conditions, including slipped disc, cervical and lumbar spine problems, head injury, brain and spinal tumours, hydrocephalus and trigeminal neuralgia.",
+    available: "By appointment",
+    languages: [],
+    image: "/images/doctors/dr-alok-kumar-sahu.webp",
+    // TODO: temporary preview URL — replace with the doctor's real domain
+    website: "https://dr-alok-kumar-sahoo-umber.vercel.app/",
   },
 ];
 

@@ -29,7 +29,7 @@ export function ReviewByline({ status, className }: { status?: ReviewStatus; cla
             <Link href={`/doctors/${reviewer.slug}`} className="font-semibold text-ink-900 hover:text-brand-600">
               {reviewer.name}
             </Link>
-            , {reviewer.qualification.split(",").slice(-1)[0].trim()}
+            , {(reviewer.qualification ?? reviewer.role).split(",").slice(-1)[0].trim()}
           </span>
         </p>
       ) : (

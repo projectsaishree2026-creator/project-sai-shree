@@ -177,7 +177,7 @@ export default async function BlogPostPage({ params }: Props) {
                   </span>
                   <span>
                     <span className="block font-semibold text-ink-900 group-hover:text-brand-600">{d.name}</span>
-                    <span className="block text-sm text-ink-500">{d.qualification.split(",").slice(-1)[0].trim()}</span>
+                    <span className="block text-sm text-ink-500">{(d.qualification ?? d.role).split(",").slice(-1)[0].trim()}</span>
                   </span>
                 </Link>
               ))}

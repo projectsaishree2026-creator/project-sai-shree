@@ -15,6 +15,9 @@ const nextConfig = {
       // Case-only changes (dr-manasi-Das, dr-Asutosh-Rout) are redirected by proxy.ts:
       // Next.js matches redirects case-insensitively, so listing them here would loop.
       { source: "/doctors/dr-abhash-dash", destination: "/doctors/dr-abhas-dash", permanent: true },
+      // Doctors who no longer consult here → their department page
+      { source: "/doctors/dr-pratha-apramita", destination: "/services/gynecology", permanent: true },
+      { source: "/doctors/dr-niramaya-madhual", destination: "/services/gynecology", permanent: true },
     ];
   },
   compiler: {

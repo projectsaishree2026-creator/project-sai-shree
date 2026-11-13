@@ -23,9 +23,12 @@ export const serviceReview: Record<string, ReviewStatus> = {
   pulmonology: { reviewerId: "dr-Asutosh-Rout", reviewedOn: null },
   gastroenterology: { reviewerId: "dr-suryakanta-parida", reviewedOn: null },
   dental: { reviewerId: "dr-abhash-dashs", reviewedOn: null },
-  gynecology: { reviewerId: "dr-pratha-apramita", reviewedOn: null },
+  gynecology: { reviewerId: "dr-deepa-sethi", reviewedOn: null },
   urology: { reviewerId: "dr-soumya-ranjan-behera", reviewedOn: null },
   oncology: { reviewerId: "dr-nitya-nutan-misra", reviewedOn: null },
+  hematology: { reviewerId: "dr-mitanjali-behera", reviewedOn: null },
+  orthopedics: { reviewerId: "dr-jitendra-sarangi", reviewedOn: null },
+  neurosurgery: { reviewerId: "dr-alok-kumar-sahu", reviewedOn: null },
 };
 
 /** Blog posts — reviewed by the doctor of the department each post supports. */

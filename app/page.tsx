@@ -17,7 +17,7 @@ import { DepartmentMarquee } from "@/components/shared/department-marquee";
 const META = {
   title: "Multispecialty Polyclinic in Cuttack | Sai Shree Polyclinic",
   description:
-    "Sai Shree Polyclinic in Mangalabag, Cuttack: 9 specialist doctors across 8 departments, plus diagnostics and a pharmacy. Mon–Sat 9 AM–7 PM. Book on WhatsApp.",
+    "Sai Shree Polyclinic in Mangalabag, Cuttack: 11 specialist doctors across 11 departments, plus diagnostics and a pharmacy. Mon–Sat 9 AM–7 PM. Book on WhatsApp.",
   path: "/",
   languages: { en: "/", or: "/or" },
 };

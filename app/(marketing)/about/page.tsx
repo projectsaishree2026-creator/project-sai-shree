@@ -16,7 +16,7 @@ import { WhatsAppIcon } from "@/components/shared/icons";
 const META = {
   title: "About Sai Shree Polyclinic, Mangalabag, Cuttack",
   description:
-    "Sai Shree Polyclinic brings specialist care across 8 departments to Mangalabag, Cuttack, with diagnostics and a pharmacy in one building. Read our story.",
+    "Sai Shree Polyclinic brings specialist care across 11 departments to Mangalabag, Cuttack, with diagnostics and a pharmacy in one building. Read our story.",
   path: "/about",
 };
 
@@ -125,7 +125,7 @@ export default function AboutPage() {
                 Odisha do not have to travel far or wait endlessly for expert medical care.
               </p>
               <p>
-                Today, the polyclinic brings eight specialist departments together under one roof. Our experienced team of doctors provides expert
+                Today, the polyclinic brings 11 specialist departments together under one roof. Our experienced team of doctors provides expert
                 care in Endocrinology, Neurology, Pulmonology, Gastroenterology, Dental care, Gynecology, Urology, and
                 Oncology, ensuring accurate diagnosis and effective treatment for a wide range of medical conditions.
               </p>

@@ -63,12 +63,12 @@ export default function ServicesPage() {
           <SectionIndex index={2} label="About Sai Shree Polyclinic, Cuttack" meta="Diagnostics · Pharmacy" />
           <div className="mt-14 md:mt-20 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-20">
             <h2 className="display-md">
-              Eight departments, <span className="text-brand-500">one visit.</span>
+              Eleven departments, <span className="text-brand-500">one visit.</span>
             </h2>
             <div className="space-y-5 text-lg leading-relaxed text-ink-600">
               <p>
                 <strong className="text-ink-900">Sai Shree Polyclinic</strong> is a multispecialty polyclinic at{" "}
-                <strong className="text-ink-900">{clinic.address}</strong>. Eight specialist departments work under
+                <strong className="text-ink-900">{clinic.address}</strong>. Eleven specialist departments work under
                 one roof, so patients from Cuttack and nearby districts of Odisha can see the right specialist without
                 travelling between hospitals.
               </p>
@@ -186,7 +186,7 @@ export default function ServicesPage() {
                                   {doc.name}
                                 </span>
                                 <span className="block label-mono text-[0.625rem] text-ink-500">
-                                  {doc.qualification.split(",")[0]} · {doc.experience}
+                                  {[doc.qualification?.split(",")[0], doc.experience].filter(Boolean).join(" · ") || doc.role}
                                 </span>
                               </span>
                             </Link>
@@ -205,7 +205,7 @@ export default function ServicesPage() {
       <CTABand
         title="Book your appointment"
         highlight="today."
-        description="Serving Cuttack and all of Odisha with expert specialist care across 8 departments. Appointments confirmed within 30 minutes."
+        description="Serving Cuttack and all of Odisha with expert specialist care across 11 departments. Appointments confirmed within 30 minutes."
       />
     </>
   );

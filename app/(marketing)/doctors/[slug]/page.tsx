@@ -64,7 +64,7 @@ export default async function DoctorPage({ params }: Props) {
     { label: "Available", value: doc.available },
     { label: "Languages", value: doc.languages.join(", ") },
     { label: "Clinic hours", value: `${clinic.hours} · Sunday closed` },
-  ];
+  ].filter((f) => f.value);
 
   return (
     <>
@@ -117,10 +117,10 @@ export default async function DoctorPage({ params }: Props) {
                 </span>{" "}
                 <span className="display-lg block">{doc.name}</span>
               </h1>
-              <p className="mt-5 label-mono text-ink-400">{doc.qualification}</p>
+              {doc.qualification && <p className="mt-5 label-mono text-ink-400">{doc.qualification}</p>}
               <p className="mt-8 max-w-2xl text-lg leading-relaxed">
-                {doc.bio} Based at <strong className="text-white">Sai Shree Polyclinic, Cuttack, Odisha</strong>,{" "}
-                {doc.name} brings {doc.experience} of hands-on clinical experience to every consultation.
+                {doc.bio} {doc.name} consults at <strong className="text-white">Sai Shree Polyclinic, Cuttack, Odisha</strong>
+                {doc.experience ? `, bringing ${doc.experience.toLowerCase()} of hands-on clinical experience to every consultation.` : "."}
               </p>
               <div className="mt-10 flex flex-wrap gap-3">
                 <a href="#book" className="btn-primary btn-lg">
@@ -198,7 +198,7 @@ export default async function DoctorPage({ params }: Props) {
               </h2>
               <ol className="mt-8 border-t border-line-strong">
                 {[
-                  `Check the consultation days: ${doc.name} sees patients on ${availabilitySentence(doc)}. The clinic is open 9 AM to 7 PM and closed on Sunday.`,
+                  `Check the consultation days: ${doc.name} sees patients ${availabilitySentence(doc)}. The clinic is open 9 AM to 7 PM and closed on Sunday.`,
                   `Book on WhatsApp or call ${clinic.phoneDisplay} — our front desk confirms your slot within 30 minutes during clinic hours.`,
                   "Bring your previous prescriptions, reports and the medicines you currently take.",
                   `Come to ${clinic.address}.`,
