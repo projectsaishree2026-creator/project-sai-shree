@@ -66,8 +66,13 @@ export function DoctorCard({ doctor, showBio = false }: { doctor: Doctor; showBi
             {doctor.name}
           </Link>
         </h3>
-        <p className="mt-2 label-mono text-[0.6875rem] leading-relaxed text-ink-500">{doctor.qualification ?? doctor.role}</p>
-        {showBio && <p className="mt-4 text-[0.9375rem] leading-relaxed text-ink-600">{doctor.bio}</p>}
+        {/* Fixed heights (2 lines / 3 lines) keep every card in a row aligned */}
+        <p className="mt-2 line-clamp-2 min-h-[3.25em] label-mono text-[0.6875rem] leading-relaxed text-ink-500">
+          {doctor.qualification ?? doctor.role}
+        </p>
+        {showBio && (
+          <p className="mt-4 line-clamp-3 min-h-[4.875em] text-[0.9375rem] leading-relaxed text-ink-600">{doctor.bio}</p>
+        )}
 
         <dl className="mt-5 grid grid-cols-2 border-y border-line text-sm">
           <div className="flex flex-col-reverse py-3">

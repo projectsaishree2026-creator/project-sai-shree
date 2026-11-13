@@ -201,7 +201,7 @@ export function physician(d: Doctor) {
     name: d.name,
     url: absoluteUrl(`/doctors/${d.slug}`),
     image: absoluteUrl(d.image),
-    description: d.bio,
+    description: d.about ? `${d.bio} ${d.about}` : d.bio,
     medicalSpecialty: SPECIALTY_ENUM[d.specialtySlug],
     ...(d.languages.length ? { knowsLanguage: d.languages } : {}),
     address: postalAddress,

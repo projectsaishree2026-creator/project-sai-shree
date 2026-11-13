@@ -14,7 +14,10 @@ export interface Doctor {
   specialtySlug: string;
   /** e.g. "12 Years". Omit until confirmed — the UI hides it. */
   experience?: string;
+  /** One sentence (~110–130 characters) so every doctor card is the same height. */
   bio: string;
+  /** Optional extra detail (credentials, training) shown only on the profile page. */
+  about?: string;
   available: string;
   /** Consultation languages. Leave empty until confirmed — the UI hides it. */
   languages: string[];
@@ -52,7 +55,8 @@ export const doctors: Doctor[] = [
       "Dr. Deepa Sethi, Asst. Professor of O&G at SCB Medical College, offers pregnancy, PCOS and fertility care at Sai Shree Polyclinic, Mangalabag, Cuttack. Book.",
     specialty: "Gynecology",
     specialtySlug: "gynecology",
-    bio: "Dr. Sethi is an Obstetrician & Gynaecologist and Assistant Professor in the Department of O&G at SCB Medical College & Hospital, Cuttack, and a former Senior Resident at AIIMS. She sees women for pregnancy and high-risk pregnancy care, PCOS, fertility concerns, period problems and menopause.",
+    bio: "Dr. Sethi cares for women through pregnancy and high-risk pregnancy, PCOS, fertility concerns, period problems and menopause.",
+    about: "She is an Assistant Professor in the Department of Obstetrics & Gynaecology at SCB Medical College & Hospital, Cuttack, and a former Senior Resident at AIIMS.",
     available: "By appointment",
     languages: [],
     image: "/images/doctors/dr-deepa-sethi.webp",
@@ -176,7 +180,8 @@ export const doctors: Doctor[] = [
       "Dr. Mitanjali Behera (MD, DrNB Clinical Hematology) treats anaemia, thalassemia, sickle cell, bleeding disorders and blood cancers at Sai Shree, Cuttack.",
     specialty: "Hematology",
     specialtySlug: "hematology",
-    bio: "Dr. Behera is a Consultant Hematologist at SCB Medical College & Hospital, Cuttack, with an MD in Medicine and a DrNB in Clinical Hematology. She sees adults with anaemia, thalassemia, sickle cell disease, bleeding and clotting problems, abnormal blood counts and blood cancers.",
+    bio: "Dr. Behera treats anaemia, thalassemia, sickle cell disease, bleeding and clotting problems, abnormal blood counts and blood cancers.",
+    about: "She is a Consultant Hematologist at SCB Medical College & Hospital, Cuttack, with an MD in Medicine and a DrNB in Clinical Hematology.",
     available: "By appointment",
     languages: [],
     image: "/images/doctors/dr-mitanjali-behera.webp",
@@ -194,7 +199,8 @@ export const doctors: Doctor[] = [
       "Dr. Jitendra Sarangi (MS Ortho, DNB, FIOA) treats knee and joint pain, arthritis, sports injuries, fractures and back pain at Sai Shree Polyclinic, Cuttack.",
     specialty: "Orthopaedics",
     specialtySlug: "orthopedics",
-    bio: "Dr. Sarangi is an orthopaedic surgeon trained at SCB Medical College, Cuttack, a former Senior Resident in Orthopaedics at SCB MCH and a former Lecturer at SVNIRTAR, Olatpur. He treats joint pain and arthritis, sports and ligament injuries, fractures and back and neck pain, with fellowship training in arthroscopy and joint replacement.",
+    bio: "Dr. Sarangi treats joint pain and arthritis, sports and ligament injuries, fractures, and back and neck pain.",
+    about: "He trained at SCB Medical College, Cuttack, has worked as a Senior Resident in Orthopaedics at SCB MCH and as a Lecturer at SVNIRTAR, Olatpur, and holds a fellowship in arthroscopy and joint replacement.",
     available: "Mon–Sat",
     languages: [],
     image: "/images/doctors/dr-jitendra-sarangi.webp",
@@ -211,7 +217,8 @@ export const doctors: Doctor[] = [
       "Dr. Alok Kumar Sahu, neurosurgeon, sees patients with slipped disc, spine problems, head injury, brain tumours and nerve pain at Sai Shree, Mangalabag, Cuttack.",
     specialty: "Neurosurgery",
     specialtySlug: "neurosurgery",
-    bio: "Dr. Sahu is a neurosurgeon who sees patients with brain, spine and nerve conditions, including slipped disc, cervical and lumbar spine problems, head injury, brain and spinal tumours, hydrocephalus and trigeminal neuralgia.",
+    bio: "Dr. Sahu is a neurosurgeon treating slipped disc, neck and back spine problems, head injury, brain tumours and nerve pain.",
+    about: "He also sees patients with spinal tumours, hydrocephalus and trigeminal neuralgia, and reviews MRI and CT scans in plain language.",
     available: "By appointment",
     languages: [],
     image: "/images/doctors/dr-alok-kumar-sahu.webp",

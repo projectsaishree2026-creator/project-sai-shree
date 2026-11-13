@@ -119,7 +119,7 @@ export default async function DoctorPage({ params }: Props) {
               </h1>
               {doc.qualification && <p className="mt-5 label-mono text-ink-400">{doc.qualification}</p>}
               <p className="mt-8 max-w-2xl text-lg leading-relaxed">
-                {doc.bio} {doc.name} consults at <strong className="text-white">Sai Shree Polyclinic, Cuttack, Odisha</strong>
+                {doc.bio} {doc.about && `${doc.about} `}{doc.name} consults at <strong className="text-white">Sai Shree Polyclinic, Cuttack, Odisha</strong>
                 {doc.experience ? `, bringing ${doc.experience.toLowerCase()} of hands-on clinical experience to every consultation.` : "."}
               </p>
               <div className="mt-10 flex flex-wrap gap-3">
