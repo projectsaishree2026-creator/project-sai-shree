@@ -133,6 +133,7 @@ export const doctors: Doctor[] = [
     available: "Everyday",
     languages: ["Odia", "Hindi", "English"],
     image: "/images/doctors/dr-nitya-nutan-misra.webp",
+    website: "https://www.drnityanutanmisra.com/",
   },
   {
     id: "dr-suryakanta-parida",
