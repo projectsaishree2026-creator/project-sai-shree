@@ -61,7 +61,7 @@ export const doctors: Doctor[] = [
     languages: [],
     image: "/images/doctors/dr-deepa-sethi.webp",
     // TODO: temporary preview URL — replace with the doctor's real domain
-    website: "https://drdeepasethi.vercel.app/",
+    website: "https://drdeepasethi.com/",
   },
   {
     id: "dr-manasi-Das",
@@ -187,7 +187,7 @@ export const doctors: Doctor[] = [
     languages: [],
     image: "/images/doctors/dr-mitanjali-behera.webp",
     // TODO: temporary preview URL — replace with the doctor's real domain
-    website: "https://drmitanjalibehera.vercel.app/",
+    website: "https://drmitanjalibehera.com/",
   },
   {
     id: "dr-jitendra-sarangi",
@@ -206,7 +206,7 @@ export const doctors: Doctor[] = [
     languages: [],
     image: "/images/doctors/dr-jitendra-sarangi.webp",
     // TODO: temporary preview URL — replace with the doctor's real domain
-    website: "https://dr-jitendra-sarangi-ruddy.vercel.app/",
+    website: "https://drjitendrasarangi.com/",
   },
   {
     id: "dr-alok-kumar-sahu",
@@ -224,7 +224,7 @@ export const doctors: Doctor[] = [
     languages: [],
     image: "/images/doctors/dr-alok-kumar-sahu.webp",
     // TODO: temporary preview URL — replace with the doctor's real domain
-    website: "https://dr-alok-kumar-sahoo-umber.vercel.app/",
+    website: "https://dralokkumarsahu.com/",
   },
 ];
 
