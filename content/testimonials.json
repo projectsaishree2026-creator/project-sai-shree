@@ -58,5 +58,15 @@
     "specialty": "General",
     "initials": "DN",
     "color": "#F59E0B"
+  },
+  {
+    "id": "t-ojhohr",
+    "name": "Manish Kumar",
+    "location": "Cuttack",
+    "rating": 5,
+    "review": "Dr. Alok Kumar Sahu is a knowledgeable and professional neurosurgeon. He explains medical conditions clearly, listens patiently, and provides proper guidance. Highly recommended for anyone looking for a trusted neurosurgeon and spine specialist in Cuttack.",
+    "specialty": "Neurology",
+    "initials": "MK",
+    "color": "#0EA5E9"
   }
 ]
