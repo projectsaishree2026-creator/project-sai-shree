@@ -1,20 +1,22 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowDown, ArrowUp, Check, ExternalLink, Loader2, LogOut, Plus, Search, Trash2, TriangleAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { COLLECTIONS, COLLECTION_KEYS, type CollectionKey } from "@/lib/admin/collections";
 import { CONFIG, type Item, type ListConfig } from "./config";
 import { Fields, IconBtn, move, type FieldCtx } from "./fields";
 
-type Loaded = { data: Item | Item[]; version: string; mode: "github" | "local" };
+/** `key` = the section this data belongs to, so a list editor never renders another section's data. */
+type Loaded = { key: CollectionKey; data: Item | Item[]; version: string; mode: "github" | "local" };
 type Toast = { kind: "ok" | "error"; text: string } | null;
 
 export function AdminEditor() {
   const [section, setSection] = useState<CollectionKey>("clinic");
   const [loaded, setLoaded] = useState<Loaded | null>(null);
   const [draft, setDraft] = useState<Item | Item[] | null>(null);
-  const [loading, setLoading] = useState(true);
+  /** section whose load failed (shows a reload button instead of the spinner) */
+  const [failed, setFailed] = useState<CollectionKey | null>(null);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [toast, setToast] = useState<Toast>(null);
@@ -25,27 +27,38 @@ export function AdminEditor() {
   /** indexes of items added in this session (unsaved) */
   const [newIdx, setNewIdx] = useState<Set<number>>(new Set());
 
+  // After switching sections, `loaded`/`draft` still hold the previous section until the
+  // fetch finishes. Only render (and allow saving) once they belong to the current section.
+  const ready = !!draft && loaded?.key === section;
+  const loading = !ready && failed !== section;
   const dirty = useMemo(() => !!loaded && JSON.stringify(loaded.data) !== JSON.stringify(draft), [loaded, draft]);
 
-  const load = useCallback(async (key: CollectionKey) => {
-    setLoading(true);
-    setErrors({});
-    setToast(null);
-    const res = await fetch(`/api/admin/content/${key}`, { cache: "no-store" });
-    if (res.status === 401) return void (window.location.href = "/admin/login");
-    const json = await res.json();
-    setLoading(false);
-    if (!res.ok) return setToast({ kind: "error", text: json.error || "Could not load" });
-    setLoaded(json);
-    setDraft(structuredClone(json.data));
-    setSelected(0);
-    setNewIdx(new Set());
-    if (key === "services") setServices(json.data);
-  }, []);
-
   useEffect(() => {
-    load(section);
-  }, [section, load]);
+    let cancelled = false;
+    const fail = (text: string) => {
+      setFailed(section);
+      setToast({ kind: "error", text });
+    };
+    (async () => {
+      try {
+        const res = await fetch(`/api/admin/content/${section}`, { cache: "no-store" });
+        if (res.status === 401) return void (window.location.href = "/admin/login");
+        const json = await res.json().catch(() => ({}));
+        if (cancelled) return;
+        if (!res.ok) return fail(json.error || "Could not load this section");
+        setLoaded({ key: section, data: json.data, version: json.version, mode: json.mode });
+        setDraft(structuredClone(json.data));
+        setSelected(0);
+        setNewIdx(new Set());
+        if (section === "services") setServices(json.data);
+      } catch {
+        if (!cancelled) fail("Could not load this section. Check your connection and try again.");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [section]);
 
   // Department dropdowns need the service list
   useEffect(() => {
@@ -65,11 +78,14 @@ export function AdminEditor() {
   function switchTo(key: CollectionKey) {
     if (key === section) return;
     if (dirty && !confirm("You have unsaved changes. Discard them?")) return;
+    setErrors({});
+    setToast(null);
+    setFailed(null);
     setSection(key);
   }
 
   async function save() {
-    if (!draft || !loaded) return;
+    if (!draft || !loaded || !ready) return;
     const cfg = CONFIG[section];
     const data = cfg.kind === "list" && cfg.finalize ? (draft as Item[]).map(cfg.finalize) : draft;
     setSaving(true);
@@ -100,7 +116,7 @@ export function AdminEditor() {
       if (cfg.kind === "list" && first && /^\d+/.test(first)) setSelected(Number(first.split(".")[0]));
       return setToast({ kind: "error", text: json.error || "Save failed" });
     }
-    const next: Loaded = { data: json.data, version: json.version, mode: json.mode };
+    const next: Loaded = { key: section, data: json.data, version: json.version, mode: json.mode };
     setLoaded(next);
     setDraft(structuredClone(json.data));
     setNewIdx(new Set());
@@ -161,7 +177,7 @@ export function AdminEditor() {
                 Discard
               </button>
             )}
-            <button onClick={save} disabled={!dirty || saving} className="inline-flex items-center gap-2 rounded-md bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-40">
+            <button onClick={save} disabled={!ready || !dirty || saving}className="inline-flex items-center gap-2 rounded-md bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-40">
               {saving ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />} {saving ? "Saving…" : "Save changes"}
             </button>
           </div>
@@ -176,8 +192,12 @@ export function AdminEditor() {
 
         <main className="flex-1 p-5">
           <p className="mb-5 max-w-3xl text-sm text-ink-600">{cfg.intro}</p>
-          {loading || !draft ? (
-            <div className="flex items-center gap-2 text-sm text-ink-500"><Loader2 size={16} className="animate-spin" /> Loading…</div>
+          {!ready ? (
+            loading ? (
+              <div className="flex items-center gap-2 text-sm text-ink-500"><Loader2 size={16} className="animate-spin" /> Loading…</div>
+            ) : (
+              <button onClick={() => window.location.reload()} className="rounded-md border border-line-strong px-3 py-2 text-sm text-ink-700 hover:bg-surface">Reload page</button>
+            )
           ) : cfg.kind === "object" ? (
             <div className="max-w-3xl rounded-xl border border-line bg-white p-6">
               <Fields fields={cfg.fields} value={draft as Item} onChange={setDraft} path="" ctx={{ ...ctxBase, isNew: true }} />
