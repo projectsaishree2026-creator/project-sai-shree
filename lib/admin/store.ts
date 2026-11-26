@@ -42,6 +42,19 @@ async function gh(url: string, init?: RequestInit) {
   return res;
 }
 
+/** Turn a failed GitHub response into a message the editor can act on (never includes the token). */
+async function ghError(res: Response, action: "read" | "save") {
+  const body = (await res.json().catch(() => null)) as { message?: string } | null;
+  const reason = body?.message ? `: ${body.message}` : "";
+  const hint =
+    res.status === 401
+      ? " The GITHUB_TOKEN in Vercel is invalid or expired — create a new one and update it in Vercel."
+      : action === "save" && (res.status === 403 || res.status === 404)
+        ? " The GITHUB_TOKEN needs “Contents: Read and write” permission on this repository (GitHub → Settings → Developer settings → Fine-grained tokens → Edit)."
+        : "";
+  return new StoreError(`GitHub ${action} failed (${res.status}${reason}).${hint}`, 502);
+}
+
 /** Current file content (UTF-8) and its version (git blob sha, or mtime locally). */
 export async function readFile(filePath: string): Promise<{ text: string; version: string }> {
   if (storeMode() === "local") {
@@ -50,7 +63,7 @@ export async function readFile(filePath: string): Promise<{ text: string; versio
     return { text, version: String(stat.mtimeMs) };
   }
   const res = await gh(`${encodeURI(filePath)}?ref=${encodeURIComponent(branch())}`);
-  if (!res.ok) throw new StoreError(`GitHub read failed (${res.status})`, 502);
+  if (!res.ok) throw await ghError(res, "read");
   const json = (await res.json()) as { content: string; sha: string };
   return { text: Buffer.from(json.content, "base64").toString("utf8"), version: json.sha };
 }
@@ -90,7 +103,7 @@ export async function writeFile(
   if (res.status === 409 || res.status === 422) {
     throw new StoreError("This section changed since you opened it. Reload and try again.", 409);
   }
-  if (!res.ok) throw new StoreError(`GitHub save failed (${res.status})`, 502);
+  if (!res.ok) throw await ghError(res, "save");
   const json = (await res.json()) as { content: { sha: string } };
   return { version: json.content.sha };
 }
