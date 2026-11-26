@@ -3,6 +3,7 @@ import { Inter_Tight, JetBrains_Mono, Instrument_Serif } from "next/font/google"
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { PublicOnly } from "@/components/layout/public-only";
 import { FloatingContact } from "@/components/shared/floating-contact";
 import { clinic } from "@/data/clinic";
 import { siteConfig } from "@/config/site";
@@ -66,12 +67,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <Navbar />
+        <PublicOnly>
+          <Navbar />
+        </PublicOnly>
         <main id="main" className="flex-1">
           {children}
         </main>
-        <Footer />
-        <FloatingContact />
+        <PublicOnly>
+          <Footer />
+          <FloatingContact />
+        </PublicOnly>
         {GA_MEASUREMENT_ID && <ClickTracking />}
       </body>
       {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}

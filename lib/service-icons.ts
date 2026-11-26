@@ -30,3 +30,4 @@ const ICONS: Record<string, LucideIcon> = {
 export function getServiceIcon(name: string): LucideIcon {
   return ICONS[name] ?? Activity;
 }
+export const SERVICE_ICON_NAMES = Object.keys(ICONS);
